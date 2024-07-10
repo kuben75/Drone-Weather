@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pogoda dla operatorów dronów</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="top">
+            <div class="top-heading">
+                <h3 class="city-name"></h3>
+                <h3 class="local-time"></h3>
+            </div>
+            <div class="main-info">
+                <div>
+                    <input type="text" placeholder="Wpisz nazwę miasta..." aria-label="Nazwa miasta">
+                    <p class="warning" aria-live="polite"></p>
+                </div>
+                <img src="./img/unknown.png" alt="Obrazek przedstawiający pogodę" class="photo">
+            </div>
+        </header>
+        <main class="bottom">
+            <div class="headings">
+                <p>Pogoda:</p>
+                <p>Temperatura:</p>
+                <p>Wilgotność:</p>
+            </div>
+            <div class="weather-info">
+                <p class="weather"></p>
+                <p class="temperature"></p>
+                <p class="humidity"></p>
+            </div>
+            <div class="headings">
+                <p>Prędkość wiatru:</p>
+                <p>Gęstość chmur:</p>
+                <p>Prędkość porywów wiatru:</p>
+            </div>
+            <div class="weather-info">
+                <p class="wind"></p>
+                <p class="cloud"></p>
+                <p class="gust"></p>
+            </div>
+        </main>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

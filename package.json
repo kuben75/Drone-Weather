@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "google-translate-api": "^2.3.0",
+    "sass": "^1.77.6"
+  }
+}
