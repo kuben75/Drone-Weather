@@ -15,6 +15,7 @@ const uv = document.querySelector(".uv");
 const vis = document.querySelector(".visibility");
 
 
+
 const API_LINK = 'https://api.weatherapi.com/v1/forecast.json?key='
 const API_KEY = 'c47ad91c29a24a908a9115318240207'
 const weatherIcons = {
@@ -136,26 +137,46 @@ const fetchWeather = (city) => {
         });
         
 };
+const updateNextWeather = (data) => {
+    const currentTime = data.location.localtime.split(' ')[1].split(':');
+    const currentHour = parseInt(currentTime[0], 10);
+
+    const hourData = data.forecast.forecastday[0].hour;
+    const startIndex = hourData.findIndex(hour => parseInt(hour.time.split(' ')[1].split(':')[0], 10) === currentHour);
+
+    for (let i = 0; i < 6; i++) {
+        const index = (startIndex + i+1) % 24; 
+
+        const cityHour = document.querySelector(`.city-hour${i}`);
+        if (cityHour) {
+            const timeOnly = hourData[index].time.split(' ')[1];
+            cityHour.textContent = timeOnly;
+        }
+    }
+};
 
 const updateWeatherInfo = (data) => {
-    cityName.textContent = data.location.name
-    weather.textContent = data.current.condition.text
-    temperature.textContent = `${Math.floor(data.current.temp_c)} ℃`
-    temperature.dataset.fahrenheit = (data.current.temp_c * 1.8 + 32).toFixed(0)
-    temperature.dataset.celsious = `${Math.floor(data.current.temp_c)} ℃`
-    humidity.textContent = `${data.current.humidity}%`
-    localTime.textContent = data.location.localtime
-    wind.textContent = `${Math.floor(data.current.wind_kph)} km/h`
-    cloud.textContent = `${data.current.cloud}%`
-    gust.textContent = `${Math.floor(data.current.gust_kph)} km/h`
+    cityName.textContent = data.location.name;
+    weather.textContent = data.current.condition.text;
+    temperature.textContent = `${Math.floor(data.current.temp_c)} ℃`;
+    temperature.dataset.fahrenheit = (data.current.temp_c * 1.8 + 32).toFixed(0);
+    temperature.dataset.celsious = `${Math.floor(data.current.temp_c)} ℃`;
+    humidity.textContent = `${data.current.humidity}%`;
+    localTime.textContent = data.location.localtime;
+
+    wind.textContent = `${Math.floor(data.current.wind_kph)} km/h`;
+    cloud.textContent = `${data.current.cloud}%`;
+    gust.textContent = `${Math.floor(data.current.gust_kph)} km/h`;
     windDir.textContent = data.current.wind_dir;
     windDegree.textContent = `${data.current.wind_degree} °`;
-    uv.textContent = data.current.uv
-    vis.textContent = `${data.current.vis_km} km`
-    const code = data.current.condition.code
-    updateWeatherIcon(code)
+    uv.textContent = data.current.uv;
+    vis.textContent = `${data.current.vis_km} km`;
+    const code = data.current.condition.code;
+    updateWeatherIcon(code);
+    updateNextWeather(data);
     console.log(data);
 };
+
   
 
 const defaultWeather = () => {

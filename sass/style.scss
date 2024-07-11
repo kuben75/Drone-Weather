@@ -22,8 +22,8 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.35);
-  color: white;
+  background-color: white;
+  color: black;
   height: 15vh;
 
   .logo {
@@ -31,8 +31,8 @@ body {
     align-items: center;
 
     img {
-      width: 50px;
-      height: 50px;
+      width: 150px;
+      height: 150px;
     }
 
     h1 {
@@ -70,68 +70,70 @@ body {
     }
   }
 
-  .temp-switch {
-    display: inline-block;
+  
+}
+.temp-switch {
+  display: inline-block;
+  position: relative;
+  width: 120px;
+  height: 40px;
+  background-color: $backgroundinput-color;
+  border-radius: 20px;
+  padding: 5px;
+  overflow: hidden;
+  left: 25px;
+  top: 25px;
+
+  label {
+    display: block;
     position: relative;
-    width: 120px;
-    height: 40px;
-    background-color: $backgroundinput-color;
-    border-radius: 20px;
-    padding: 5px;
-    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
 
-    label {
-      display: block;
-      position: relative;
-      width: 100%;
+    .slider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 60px;
       height: 100%;
-      cursor: pointer;
-
-      .slider {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 60px;
-        height: 100%;
-        background-color: $slider-color;
-        border-radius: 20px;
-        transition: transform 0.3s ease;
-      }
-
-      .toright {
-        transform: translateX(60px);
-      }
-
-      .toggle-cels,
-      .toggle-fahr {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 50%;
-        text-align: center;
-        color: $text-color;
-        font-weight: bold;
-
-        &:first-of-type {
-          left: 5px;
-        }
-
-        &:last-of-type {
-          right: 5px;
-        }
-      }
+      background-color: $slider-color;
+      border-radius: 20px;
+      transition: transform 0.3s ease;
     }
 
-    input[type="checkbox"] {
-      display: none;
-    }
-
-    input[type="checkbox"]:checked + label .slider {
+    .toright {
       transform: translateX(60px);
     }
+
+    .toggle-cels,
+    .toggle-fahr {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50%;
+      text-align: center;
+      color: $text-color;
+      font-weight: bold;
+
+      &:first-of-type {
+        left: 5px;
+      }
+
+      &:last-of-type {
+        right: 5px;
+      }
+    }
+  }
+
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  input[type="checkbox"]:checked + label .slider {
+    transform: translateX(60px);
   }
 }
-
 .wrapper {
   max-width: 800px;
   margin: 20px auto;
@@ -227,6 +229,7 @@ main.bottom {
 }
 
 .main-cnt {
+  padding-top: 5vh;
   display: flex;
   justify-content: space-around;
   width: 80%;
@@ -236,5 +239,13 @@ main.bottom {
     width: 7%;
     background-color: $text-color;
     height: 100px;
+    border-radius: 10%;
+    .top-weath{
+      
+      text-align: center;
+      .city-hour0, .city-hour1, .city-hour2, .city-hour3, .city-hour4, .city-hour5{
+        color: white;
+      }
+    }
   }
 }
