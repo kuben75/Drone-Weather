@@ -17,14 +17,32 @@ body {
   margin: 0;
   padding: 0;
 }
+
 .header {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.35);;
+  background-color: rgba(0, 0, 0, 0.35);
   color: white;
   height: 15vh;
-  nav.time {
+
+  .logo {
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 50px;
+      height: 50px;
+    }
+
+    h1 {
+      margin-left: 10px;
+      font-size: 24px;
+    }
+  }
+
+  .time {
+    font-size: 18px;
     margin: 20px 0;
 
     ul {
@@ -50,24 +68,6 @@ body {
         }
       }
     }
-  }
-  .logo {
-    display: flex;
-    align-items: center;
-
-    img {
-      width: 50px;
-      height: 50px;
-    }
-
-    h1 {
-      margin-left: 10px;
-      font-size: 24px;
-    }
-  }
-
-  .time {
-    font-size: 18px;
   }
 
   .temp-switch {
@@ -102,7 +102,7 @@ body {
         transform: translateX(60px);
       }
 
-      .toggle-cels, 
+      .toggle-cels,
       .toggle-fahr {
         position: absolute;
         top: 50%;
@@ -130,11 +130,6 @@ body {
       transform: translateX(60px);
     }
   }
-
-  .temp-switch .toggle-label.active {
-    font-weight: bold;
-    color: #fff;
-  }
 }
 
 .wrapper {
@@ -160,6 +155,7 @@ body {
       font-weight: 600;
     }
   }
+
   .main-info {
     display: flex;
     align-items: center;
@@ -187,55 +183,58 @@ body {
     }
   }
 }
+
 .middle {
   justify-content: space-evenly;
 
   .center-temperature {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 20px;
-      font-size: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 36px;
   }
 
   .photo {
-      width: auto;
-      height: 120px;
-      border-radius: 4px;
+    width: auto;
+    height: 120px;
+    border-radius: 4px;
   }
-
 }
+
 main.bottom {
   border-top: 1px solid #ccc;
-  .headings {
+
+  .headings,
+  .weather-info {
     display: grid;
-    grid-template-columns: 33% 33% 33%;
+    grid-template-columns: repeat(3, 1fr);
     text-align: center;
-    p {
-      font-weight: 600;
-    }
+  }
+
+  .headings p,
+  .weather-info p {
+    margin: 0;
+  }
+
+  .headings p {
+    font-weight: 600;
   }
 
   .weather-info {
-    display: grid;
-    grid-template-columns: 33% 33% 33%;
-    text-align: center;
     margin-bottom: 10px;
-
-    p {
-      margin: 0;
-    }
   }
 }
- .main-cnt {
+
+.main-cnt {
   display: flex;
   justify-content: space-around;
   width: 80%;
   margin: 0 auto;
-   .elem
-   {
+
+  .elem {
     width: 7%;
     background-color: $text-color;
     height: 100px;
-   }
- }
+  }
+}
