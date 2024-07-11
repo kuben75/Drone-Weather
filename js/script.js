@@ -1,4 +1,4 @@
-const input = document.querySelector('input')
+const input = document.querySelector('.input-weather')
 const cityName = document.querySelector('.city-name')
 const localTime = document.querySelector('.local-time')
 const warning = document.querySelector('.warning')
@@ -107,8 +107,13 @@ const weatherIcons = {
     1273: "http://cdn.weatherapi.com/weather/64x64/day/386.png",
     1276: "http://cdn.weatherapi.com/weather/64x64/day/389.png",
     1279: "http://cdn.weatherapi.com/weather/64x64/day/392.png",
-    1282: "http://cdn.weatherapi.com/weather/64x64/day/395.png"  
-}
+    1282: "http://cdn.weatherapi.com/weather/64x64/day/395.png" 
+ }
+
+const removeAccents = (str) =>
+    str.replace(/[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/g, char =>
+      'acelnoszzACELNOSZZ'['ąćęłńóśźżĄĆĘŁŃÓŚŹŻ'.indexOf(char)]
+    );
 
 const updateWeatherIcon = (code) => {
     const url = weatherIcons[code]
@@ -116,7 +121,7 @@ const updateWeatherIcon = (code) => {
 };
 
 const fetchWeather = (city) => {
-    const URL = `${API_LINK}${API_KEY}&q=${city}`
+    const URL = `${API_LINK}${API_KEY}&q=${removeAccents(city)}`
     return fetch(URL)
         .then(response => {
             if (!response.ok) {
@@ -130,15 +135,17 @@ const updateWeatherInfo = (data) => {
     cityName.textContent = data.location.name
     weather.textContent = data.current.condition.text
     temperature.textContent = `${Math.floor(data.current.temp_c)} ℃`
+    temperature.dataset.fahrenheit = (data.current.temp_c * 1.8 + 32).toFixed(0)
+    temperature.dataset.celsious = `${Math.floor(data.current.temp_c)} ℃`
     humidity.textContent = `${data.current.humidity}%`
     localTime.textContent = data.location.localtime
     wind.textContent = `${Math.floor(data.current.wind_kph)} km/h`
     cloud.textContent = `${data.current.cloud}%`
     gust.textContent = `${Math.floor(data.current.gust_kph)} km/h`
-
     const code = data.current.condition.code
     updateWeatherIcon(code)
 };
+  
 
 const defaultWeather = () => {
     const defaultCity = 'Warszawa'
@@ -148,7 +155,7 @@ const defaultWeather = () => {
 };
 
 const getWeather = () => {
-    const city = input.value.trim()
+    const city = input.value.trim()  
     if (city) {
         fetchWeather(city)
             .then(updateWeatherInfo)
@@ -166,7 +173,18 @@ const handleEnterKey = (e) => {
     }
 };
 
+
+const changeTemp = document.querySelector('#temp-toggle')
+const sliderOne = document.querySelector('.slider')
+const celToFhr = () => {
+    sliderOne.classList.toggle('toright')
+    if (sliderOne.classList.contains('toright')) {
+        temperature.textContent = `${temperature.dataset.fahrenheit} ℉`
+    } else {
+        temperature.textContent = `${temperature.dataset.celsious}`
+    }
+}
+
+changeTemp.addEventListener('change', celToFhr)
 input.addEventListener('keyup', handleEnterKey)
 document.addEventListener('DOMContentLoaded', defaultWeather)
-
-
