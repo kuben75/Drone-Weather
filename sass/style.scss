@@ -160,7 +160,6 @@ body {
       font-weight: 600;
     }
   }
-
   .main-info {
     display: flex;
     align-items: center;
@@ -188,13 +187,30 @@ body {
     }
   }
 }
+.middle {
+  justify-content: space-evenly;
 
+  .center-temperature {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+      font-size: 36px;
+  }
+
+  .photo {
+      width: auto;
+      height: 120px;
+      border-radius: 4px;
+  }
+
+}
 main.bottom {
+  border-top: 1px solid #ccc;
   .headings {
     display: grid;
     grid-template-columns: 33% 33% 33%;
     text-align: center;
-
     p {
       font-weight: 600;
     }

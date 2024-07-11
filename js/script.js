@@ -9,6 +9,11 @@ const humidity = document.querySelector('.humidity')
 const wind = document.querySelector('.wind')
 const cloud = document.querySelector('.cloud')
 const gust = document.querySelector('.gust')
+const windDir = document.querySelector(".wind-direction");
+const windDegree = document.querySelector(".wind-degree");
+const uv = document.querySelector(".uv");
+const vis = document.querySelector(".visibility");
+
 
 const API_LINK = 'https://api.weatherapi.com/v1/forecast.json?key='
 const API_KEY = 'c47ad91c29a24a908a9115318240207'
@@ -129,6 +134,7 @@ const fetchWeather = (city) => {
             }
             return response.json()
         });
+        
 };
 
 const updateWeatherInfo = (data) => {
@@ -142,8 +148,13 @@ const updateWeatherInfo = (data) => {
     wind.textContent = `${Math.floor(data.current.wind_kph)} km/h`
     cloud.textContent = `${data.current.cloud}%`
     gust.textContent = `${Math.floor(data.current.gust_kph)} km/h`
+    windDir.textContent = data.current.wind_dir;
+    windDegree.textContent = `${data.current.wind_degree} °`;
+    uv.textContent = data.current.uv
+    vis.textContent = `${data.current.vis_km} km`
     const code = data.current.condition.code
     updateWeatherIcon(code)
+    console.log(data);
 };
   
 

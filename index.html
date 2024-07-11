@@ -36,60 +36,70 @@
         </label>
       </div>
     </header>
-    <div class="wrapper">
-      <div class="top">
-        <div class="top-heading">
-          <h3 class="city-name"></h3>
-          <h3 class="local-time"></h3>
-        </div>
-        <div class="main-info">
-          <div>
-            <input
-              class="input-weather"
-              type="text"
-              placeholder="Wpisz nazwę miasta..."
-              aria-label="Nazwa miasta"
-            />
+  <div class="wrapper">
+    <div class="top">
+      <div class="top-city">
+        <h1 class="city-name"></h1>
+    </div>
+    <div class="main-info">
+        <div>
+            <input class="input-weather" type="text" placeholder="Wpisz nazwę miasta..." aria-label="Nazwa miasta">
             <p class="warning" aria-live="polite"></p>
-          </div>
-          <img
-            src="./img/unknown.png"
-            alt="Obrazek przedstawiający pogodę"
-            class="photo"
-          />
         </div>
-      </div>
+    </div>
+    <div class="top-time">
+        <h2 class="local-time"></h2>
+    </div>
+    </div>
+      <div class="middle">
+        <div class="center-temperature">
+            <p class="temperature"></p>
+            <img src="./img/unknown.png" alt="Obrazek przedstawiający pogodę" class="photo">
+        </div>
+    </div>
       <main class="bottom">
         <div class="headings">
-          <p>Pogoda:</p>
-          <p>Temperatura:</p>
-          <p>Wilgotność:</p>
+            <p>Weather:</p>
+            <p>Cloud cover:</p>
+            <p>Visibility:</p>
         </div>
         <div class="weather-info">
-          <p class="weather"></p>
-          <p class="temperature"></p>
-          <p class="humidity"></p>
+            <p class="weather"></p>
+            <p class="cloud"></p>
+            <p class="visibility"></p>
         </div>
         <div class="headings">
-          <p>Prędkość wiatru:</p>
-          <p>Gęstość chmur:</p>
-          <p>Prędkość porywów wiatru:</p>
+            <p>Wind spreed:</p>
+            <p>Wind direction:</p>
+            <p>Wind degree:</p>
         </div>
         <div class="weather-info">
-          <p class="wind"></p>
-          <p class="cloud"></p>
-          <p class="gust"></p>
+            <p class="wind"></p>
+            <p class="wind-direction"></p>
+            <p class="wind-degree"></p>
         </div>
-      </main>
+        <div class="headings">
+            <p>Gust:</p>
+            <p>Humidity:</p>
+            <p>UV index:</p>
+        </div>
+        <div class="weather-info">
+            <p class="gust"></p>
+            <p class="humidity"></p>
+            <p class="uv"></p>
+        </div>
+    </main>
     </div>
 
     <section class="main-cnt">
-      <div class="elem one">d</div>
-      <div class="elem one">d</div>
-      <div class="elem one">d</div>
-      <div class="elem one">d</div>
-      <div class="elem one">d</div>
-      <div class="elem one">d</div>
+      <div class="elem one">d
+
+      </div>
+      <div class="elem two">d</div>
+      <div class="elem three">d</div>
+      <div class="elem four">d</div>
+      <div class="elem five">d</div>
+      <div class="elem six">d</div>
 
     </section>
     <script src="js/script.js"></script>
