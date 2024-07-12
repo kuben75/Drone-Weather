@@ -1,21 +1,24 @@
 <!doctype html>
 <html lang="pl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pogoda dla operatorów dronów</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
 
-  <body>
-    <header class="header">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pogoda dla operatorów dronów</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <header>
+    <img class="bgc" src="img/drone-3847867_1920.jpg" alt="dron w locie o zachodzie słońca">
+    <div class="title">
+      <h1>Drone Weather</h1>
+    </div>
+    <nav class="header">
       <div class="logo">
         <img src="img/img1.png" alt="Weather Icon" />
         <h1>apka dla droniarzy</h1>
@@ -27,104 +30,153 @@
           <li>3 link</li>
         </ul>
       </div>
-    </header>
-
-    <div class="temp-switch">
-      <label>
-        <input type="checkbox" id="temp-toggle" />
-        <div class="slider"></div>
-        <span class="toggle-cels">°C</span> 
-        <span class="toggle-fahr">°F</span>
-      </label>
-    </div>
+    </nav>
+  </header>
+  <div class="temp-switch">
+    <label>
+      <input type="checkbox" id="temp-toggle" />
+      <div class="slider"></div>
+      <span class="toggle-cels">°C</span>
+      <span class="toggle-fahr">°F</span>
+    </label>
+  </div>
   <div class="wrapper">
     <div class="top">
       <div class="top-city">
         <h1 class="city-name"></h1>
-    </div>
-    <div class="main-info">
+      </div>
+      <div class="main-info">
         <div>
-            <input class="input-weather" type="text" placeholder="Wpisz nazwę miasta..." aria-label="Nazwa miasta">
-            <p class="warning" aria-live="polite"></p>
+          <input class="input-weather" type="text" placeholder="Wpisz nazwę miasta..." aria-label="Nazwa miasta" />
+          <p class="warning" aria-live="polite"></p>
         </div>
-    </div>
-    <div class="top-time">
+      </div>
+      <div class="top-time">
         <h2 class="local-time"></h2>
+      </div>
     </div>
+    <div class="middle">
+      <div class="center-temperature">
+        <p class="temperature"></p>
+        <img src="./img/unknown.png" alt="Obrazek przedstawiający pogodę" class="photo" />
+      </div>
     </div>
-      <div class="middle">
-        <div class="center-temperature">
-            <p class="temperature"></p>
-            <img src="./img/unknown.png" alt="Obrazek przedstawiający pogodę" class="photo">
-        </div>
-    </div>
-      <main class="bottom">
-        <div class="headings">
-            <p>Weather:</p>
-            <p>Cloud cover:</p>
-            <p>Visibility:</p>
-        </div>
-        <div class="weather-info">
-            <p class="weather"></p>
-            <p class="cloud"></p>
-            <p class="visibility"></p>
-        </div>
-        <div class="headings">
-            <p>Wind spreed:</p>
-            <p>Wind direction:</p>
-            <p>Wind degree:</p>
-        </div>
-        <div class="weather-info">
-            <p class="wind"></p>
-            <p class="wind-direction"></p>
-            <p class="wind-degree"></p>
-        </div>
-        <div class="headings">
-            <p>Gust:</p>
-            <p>Humidity:</p>
-            <p>UV index:</p>
-        </div>
-        <div class="weather-info">
-            <p class="gust"></p>
-            <p class="humidity"></p>
-            <p class="uv"></p>
-        </div>
+    <main class="bottom">
+      <div class="headings">
+        <p>Weather:</p>
+        <p>Cloud cover:</p>
+        <p>Visibility:</p>
+      </div>
+      <div class="weather-info">
+        <p class="weather"></p>
+        <p class="cloud"></p>
+        <p class="visibility"></p>
+      </div>
+      <div class="headings">
+        <p>Wind spreed:</p>
+        <p>Wind direction:</p>
+        <p>Wind degree:</p>
+      </div>
+      <div class="weather-info">
+        <p class="wind"></p>
+        <p class="wind-direction"></p>
+        <p class="wind-degree"></p>
+      </div>
+      <div class="headings">
+        <p>Gust:</p>
+        <p>Humidity:</p>
+        <p>UV index:</p>
+      </div>
+      <div class="weather-info">
+        <p class="gust"></p>
+        <p class="humidity"></p>
+        <p class="uv"></p>
+      </div>
     </main>
-    </div>
+  </div>
 
-    <section class="main-cnt">
-      <div class="elem one">
-          <div class="top-weath">
-              <h1 class="city-hour0"></h1>
-          </div>
+  <section class="main-cnt">
+    <div class="elem one">
+      <div class="top-weath">
+        <h1 class="city-hour0"></h1>
       </div>
-      <div class="elem two">
-          <div class="top-weath">
-              <h1 class="city-hour1"></h1>
-          </div>
+      <div class="middle-weath">
+        <div class="city-image0">
+          <img src="./img/unknown.png" alt="Obrazek przedstawiający pogodę" class="photo0" />
+        </div>
       </div>
-      <div class="elem three">
-          <div class="top-weath">
-              <h1 class="city-hour2"></h1>
-          </div>
+      <div class="bottom-weath">
+        <h1 class="city-temp0"></h1>
       </div>
-      <div class="elem four">
-          <div class="top-weath">
-              <h1 class="city-hour3"></h1>
-          </div>
+    </div>
+    <div class="elem two">
+      <div class="top-weath">
+        <h1 class="city-hour1"></h1>
       </div>
-      <div class="elem five">
-          <div class="top-weath">
-              <h1 class="city-hour4"></h1>
-          </div>
+      <div class="middle-weath">
+        <div class="city-image1">
+          <img src="./img/unknown.png" alt="Obrazek przedstawiający pogodę" class="photo1" />
+        </div>
       </div>
-      <div class="elem six">
-          <div class="top-weath">
-              <h1 class="city-hour5"></h1>
-          </div>
+      <div class="bottom-weath">
+        <h1 class="city-temp1"></h1>
       </div>
+    </div>
+    <div class="elem three">
+      <div class="top-weath">
+        <h1 class="city-hour2"></h1>
+      </div>
+      <div class="middle-weath">
+        <div class="city-image2">
+          <img src="./img/unknown.png" alt="Obrazek przedstawiający pogodę" class="photo2" />
+        </div>
+      </div>
+      <div class="bottom-weath">
+        <h1 class="city-temp2"></h1>
+      </div>
+    </div>
+    <div class="elem four">
+      <div class="top-weath">
+        <h1 class="city-hour3"></h1>
+      </div>
+      <div class="middle-weath">
+        <div class="city-image3">
+          <img src="./img/unknown.png" alt="Obrazek przedstawiający pogodę" class="photo3" />
+        </div>
+      </div>
+      <div class="bottom-weath">
+        <h1 class="city-temp3"></h1>
+      </div>
+    </div>
+    <div class="elem five">
+      <div class="top-weath">
+        <h1 class="city-hour4"></h1>
+      </div>
+      <div class="middle-weath">
+        <div class="city-image4">
+          <img src="./img/unknown.png" alt="Obrazek przedstawiający pogodę" class="photo4" />
+        </div>
+      </div>
+      <div class="bottom-weath">
+        <h1 class="city-temp4"></h1>
+      </div>
+    </div>
+    <div class="elem six">
+      <div class="top-weath">
+        <h1 class="city-hour5"></h1>
+      </div>
+      <div class="middle-weath">
+        <div class="city-image5">
+          <img src="./img/unknown.png" alt="Obrazek przedstawiający pogodę" class="photo5" />
+        </div>
+      </div>
+      <div class="bottom-weath">
+        <h1 class="city-temp5"></h1>
+      </div>
+    </div>
   </section>
-  
-    <script src="js/script.js"></script>
-  </body>
+
+  <script src="js/script.js"></script>
+</body>
+
 </html>

@@ -9,10 +9,10 @@ const humidity = document.querySelector('.humidity')
 const wind = document.querySelector('.wind')
 const cloud = document.querySelector('.cloud')
 const gust = document.querySelector('.gust')
-const windDir = document.querySelector(".wind-direction");
-const windDegree = document.querySelector(".wind-degree");
-const uv = document.querySelector(".uv");
-const vis = document.querySelector(".visibility");
+const windDir = document.querySelector(".wind-direction")
+const windDegree = document.querySelector(".wind-degree")
+const uv = document.querySelector(".uv")
+const vis = document.querySelector(".visibility")
 
 
 
@@ -119,63 +119,79 @@ const weatherIcons = {
 const removeAccents = (str) =>
     str.replace(/[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/g, char =>
       'acelnoszzACELNOSZZ'['ąćęłńóśźżĄĆĘŁŃÓŚŹŻ'.indexOf(char)]
-    );
-
-const updateWeatherIcon = (code) => {
-    const url = weatherIcons[code]
-    url ? photo.setAttribute('src', url) : photo.setAttribute('src', './img/unknown.png')
-};
-
-const fetchWeather = (city) => {
-    const URL = `${API_LINK}${API_KEY}&q=${removeAccents(city)}`
-    return fetch(URL)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error')
+    )
+    const updateWeatherIcon = (code) => {
+        const url = weatherIcons[code];
+        url ? photo.setAttribute('src', url) : photo.setAttribute('src', './img/unknown.png')
+    }
+    
+    const fetchWeather = (city) => {
+        const URL = `${API_LINK}${API_KEY}&q=${removeAccents(city)}`
+        return fetch(URL)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error')
+                }
+                return response.json()
+            });
+    };
+    
+    const updateNextWeather = (data) => {
+        const currentTime = data.location.localtime.split(' ')[1].split(':')
+        const currentHour = parseInt(currentTime[0], 10)
+    
+        const hourData = data.forecast.forecastday[0].hour
+        const startIndex = hourData.findIndex(hour => parseInt(hour.time.split(' ')[1].split(':')[0], 10) === currentHour)
+    
+        for (let i = 0; i < 6; i++) {
+            const index = (startIndex + i + 1) % 24
+    
+            const cityHour = document.querySelector(`.city-hour${i}`)
+            if (cityHour) {
+                const timeOnly = hourData[index].time.split(' ')[1]
+                cityHour.textContent = timeOnly
             }
-            return response.json()
-        });
-        
-};
-const updateNextWeather = (data) => {
-    const currentTime = data.location.localtime.split(' ')[1].split(':');
-    const currentHour = parseInt(currentTime[0], 10);
+    
+            const cityWeather = document.querySelector(`.photo${i}`)
+            if (cityWeather) {
+                const weatherCode = hourData[index].condition.code
+                const weatherIconUrl = weatherIcons[weatherCode]
+               weatherIconUrl ? cityWeather.setAttribute('src', weatherIconUrl) : cityWeather.setAttribute('src', './img/unknown.png')
+            }
 
-    const hourData = data.forecast.forecastday[0].hour;
-    const startIndex = hourData.findIndex(hour => parseInt(hour.time.split(' ')[1].split(':')[0], 10) === currentHour);
+            const cityTemp = document.querySelector(`.city-temp${i}`)
+            if (cityTemp){
+                const tempData = hourData[index].temp_c 
+                cityTemp.textContent = `${Math.floor(tempData)} ℃`
 
-    for (let i = 0; i < 6; i++) {
-        const index = (startIndex + i+1) % 24; 
-
-        const cityHour = document.querySelector(`.city-hour${i}`);
-        if (cityHour) {
-            const timeOnly = hourData[index].time.split(' ')[1];
-            cityHour.textContent = timeOnly;
+            }
         }
     }
-};
+    
+    const updateWeatherInfo = (data) => {
+        cityName.textContent = data.location.name
+        weather.textContent = data.current.condition.text
+        temperature.textContent = `${Math.floor(data.current.temp_c)} ℃`
+        temperature.dataset.fahrenheit = (data.current.temp_c * 1.8 + 32).toFixed(0)
+        temperature.dataset.celsious = `${Math.floor(data.current.temp_c)} ℃`
+        humidity.textContent = `${data.current.humidity}%`
+        localTime.textContent = data.location.localtime
+        wind.textContent = `${Math.floor(data.current.wind_kph)} km/h`
+        cloud.textContent = `${data.current.cloud}%`
+        gust.textContent = `${Math.floor(data.current.gust_kph)} km/h`
+        windDir.textContent = data.current.wind_dir
+        windDegree.textContent = `${data.current.wind_degree} °`
+        uv.textContent = data.current.uv;
+        vis.textContent = `${data.current.vis_km} km`
+        const code = data.current.condition.code
+        updateWeatherIcon(code)
+        updateNextWeather(data)
+        console.log(data)
+    };
 
-const updateWeatherInfo = (data) => {
-    cityName.textContent = data.location.name;
-    weather.textContent = data.current.condition.text;
-    temperature.textContent = `${Math.floor(data.current.temp_c)} ℃`;
-    temperature.dataset.fahrenheit = (data.current.temp_c * 1.8 + 32).toFixed(0);
-    temperature.dataset.celsious = `${Math.floor(data.current.temp_c)} ℃`;
-    humidity.textContent = `${data.current.humidity}%`;
-    localTime.textContent = data.location.localtime;
-
-    wind.textContent = `${Math.floor(data.current.wind_kph)} km/h`;
-    cloud.textContent = `${data.current.cloud}%`;
-    gust.textContent = `${Math.floor(data.current.gust_kph)} km/h`;
-    windDir.textContent = data.current.wind_dir;
-    windDegree.textContent = `${data.current.wind_degree} °`;
-    uv.textContent = data.current.uv;
-    vis.textContent = `${data.current.vis_km} km`;
-    const code = data.current.condition.code;
-    updateWeatherIcon(code);
-    updateNextWeather(data);
-    console.log(data);
-};
+    const checkParametres = (data) => {
+        
+    }
 
   
 
