@@ -13,8 +13,12 @@ const windDir = document.querySelector(".wind-direction")
 const windDegree = document.querySelector(".wind-degree")
 const uv = document.querySelector(".uv")
 const vis = document.querySelector(".visibility")
-
-
+const cloudCondition = document.querySelector(`.weath-one`)
+const visCondition = document.querySelector(`.weath-two`)
+const speedCondition = document.querySelector(`.weath-three`)
+const gustCondition = document.querySelector(`.weath-four`)
+const humCondition = document.querySelector(`.weath-five`)
+const uvCondition = document.querySelector(`.weath-six`)
 
 const API_LINK = 'https://api.weatherapi.com/v1/forecast.json?key='
 const API_KEY = 'c47ad91c29a24a908a9115318240207'
@@ -136,6 +140,95 @@ const removeAccents = (str) =>
             });
     };
     
+
+
+        const checkCloud = (data) => {
+           
+           const updateCloud =  `${data.current.cloud}`
+            if (updateCloud <= 20 )
+            {
+            cloudCondition.textContent = `${data.current.cloud}% - bezpieczne warunki`
+         }else if (updateCloud > 20 || updateCloud <= 50)
+            {
+            cloudCondition.textContent = `${data.current.cloud}% - umiarkowane warunki`
+            }else{
+            cloudCondition.textContent = `${data.current.cloud}% - niebezpieczne warunki`
+            } 
+            
+        }
+        const checkVisibility = (data) => {
+           const updateVis =  `${data.current.vis_km}`
+           console.log(updateVis);
+            if (updateVis >= 5 )
+            {
+                visCondition.textContent = `${updateVis} km - bezpieczne warunki`
+         }else if (updateVis > 1 || updateVis < 5)
+            {
+                visCondition.textContent = `${updateVis} km- umiarkowane warunki`
+            }else 
+                {
+                visCondition.textContent = `${updateVis} km- niebezpieczne warunki`
+            } 
+        }
+        const checkSpeed = (data) => {
+            const updateSpeed = `${Math.floor(data.current.wind_kph)}`
+        
+             if (updateSpeed <= 15 )
+             {
+                speedCondition.textContent = `${updateSpeed} km/h - bezpieczne warunki`
+          }else if (updateSpeed > 15 || updateSpeed <= 30)
+             {
+                speedCondition.textContent = `${updateSpeed} km/h- umiarkowane warunki`
+             }else 
+                 {
+                speedCondition.textContent = `${updateSpeed} km/h- niebezpieczne warunki`
+             } 
+         }
+
+
+         const checkGust = (data) => {
+            const updateGust = `${data.current.gust_kph}`
+        
+             if (updateGust < 20 )
+             {
+                gustCondition.textContent = `${updateGust} km/h - bezpieczne warunki`
+          }else if (updateGust >= 20 || updateGust <= 40)
+             {
+                gustCondition.textContent = `${updateGust} km/h- umiarkowane warunki`
+             }else 
+                 {
+                gustCondition.textContent = `${updateGust} km/h- niebezpieczne warunki`
+             } 
+         }
+         const checkHum = (data) => {
+            const updateHum = `${data.current.humidity}`
+        
+             if (updateHum  <= 50 )
+             {
+                humCondition.textContent = `${updateHum} % - bezpieczne warunki`
+          }else if (updateHum > 50 || updateHum <= 70)
+             {
+                humCondition.textContent = `${updateHum} %- umiarkowane warunki`
+             }else 
+                 {
+                humCondition.textContent = `${updateHum} %- niebezpieczne warunki`
+             } 
+         }
+         const checkUv = (data) => {
+            const updateUv = data.current.uv
+        
+             if (updateUv  < 5 )
+             {
+                uvCondition.textContent = `${updateUv}  - bezpieczne warunki`
+          }else if (updateUv >= 6 || updateUv < 11)
+             {
+                uvCondition.textContent = `${updateUv} - umiarkowane warunki`
+             }else 
+                 {
+                    uvCondition.textContent = `${updateUv} - niebezpieczne warunki`
+             } 
+         }
+
     const updateNextWeather = (data) => {
         const currentTime = data.location.localtime.split(' ')[1].split(':')
         const currentHour = parseInt(currentTime[0], 10)
@@ -169,30 +262,58 @@ const removeAccents = (str) =>
     }
     
     const updateWeatherInfo = (data) => {
-        cityName.textContent = data.location.name
-        weather.textContent = data.current.condition.text
-        temperature.textContent = `${Math.floor(data.current.temp_c)} ℃`
-        temperature.dataset.fahrenheit = (data.current.temp_c * 1.8 + 32).toFixed(0)
-        temperature.dataset.celsious = `${Math.floor(data.current.temp_c)} ℃`
-        humidity.textContent = `${data.current.humidity}%`
-        localTime.textContent = data.location.localtime
-        wind.textContent = `${Math.floor(data.current.wind_kph)} km/h`
-        cloud.textContent = `${data.current.cloud}%`
-        gust.textContent = `${Math.floor(data.current.gust_kph)} km/h`
-        windDir.textContent = data.current.wind_dir
-        windDegree.textContent = `${data.current.wind_degree} °`
-        uv.textContent = data.current.uv;
-        vis.textContent = `${data.current.vis_km} km`
+        const locationName = data.location.name
+        cityName.textContent = locationName
+
+        const updateWeath = data.current.condition.text
+        weather.textContent = updateWeath
+
+        const updateTemp = `${Math.floor(data.current.temp_c)} ℃`
+        temperature.textContent = updateTemp
+
+        const fahr = (data.current.temp_c * 1.8 + 32).toFixed(0)
+        temperature.dataset.fahrenheit = fahr
+        const temp = `${Math.floor(data.current.temp_c)} ℃`
+        temperature.dataset.celsious = temp
+
+        const updateHum = `${data.current.humidity}%`
+        humidity.textContent = updateHum
+
+        const updateTime = data.location.localtime
+        localTime.textContent = updateTime
+        
+
+        const updateWind = `${Math.floor(data.current.wind_kph)} km/h`
+        wind.textContent = updateWind
+
+        const updateCloud = `${data.current.cloud}%`
+        cloud.textContent = updateCloud
+
+        const updateGust = `${Math.floor(data.current.gust_kph)} km/h`
+        gust.textContent = updateGust
+
+        const updateDir = data.current.wind_dir
+        windDir.textContent = updateDir
+
+        const updateDeg = `${data.current.wind_degree} °`
+        windDegree.textContent = updateDeg
+
+        const updateUv = data.current.uv
+        uv.textContent = updateUv
+
+        const updateVis = `${data.current.vis_km} km`
+        vis.textContent = updateVis
         const code = data.current.condition.code
         updateWeatherIcon(code)
         updateNextWeather(data)
+        checkCloud(data)
+        checkVisibility(data)
+        checkSpeed(data)
+        checkGust(data)
+        checkHum(data)
+        checkUv(data)
         console.log(data)
     };
-
-    const checkParametres = (data) => {
-        
-    }
-
   
 
 const defaultWeather = () => {
@@ -218,6 +339,7 @@ const getWeather = () => {
 const handleEnterKey = (e) => {
     if (e.key === 'Enter') {
         getWeather();
+
     }
 };
 
@@ -232,7 +354,6 @@ const celToFhr = () => {
         temperature.textContent = `${temperature.dataset.celsious}`
     }
 }
-
 changeTemp.addEventListener('change', celToFhr)
 input.addEventListener('keyup', handleEnterKey)
 document.addEventListener('DOMContentLoaded', defaultWeather)
