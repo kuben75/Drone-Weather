@@ -9,6 +9,11 @@ $highlight-color: #00ffb3;
 $backgroundinput-color: #ffffff;
 $slider-color: #4caf50;
 $text-color: #555;
+$green: #91d36b;
+$orange: #fc9b1b;
+$lightGrey: #999;
+$grey: #444;
+$darkGrey: #333;
 
 body {
   font-family: "Poppins", sans-serif;
@@ -21,17 +26,17 @@ header {
   position: relative;
   max-width: 100%;
   height: 100vh;
-  
+
   .bgc {
     overflow: hidden;
     width: 100%;
-   height: 100vh;
+    height: 100vh;
   }
   .title {
     position: absolute;
     top: 75%;
     left: 15%;
-    font-family: Georgia, 'Times New Roman', Times, sans-serif;
+    font-family: Georgia, "Times New Roman", Times, sans-serif;
     font-size: 30px;
     color: #ffffff;
   }
@@ -52,50 +57,124 @@ header {
     .logo {
       display: flex;
       align-items: center;
-  
+
       img {
         width: 150px;
         height: 150px;
       }
-  
+
       h1 {
         margin-left: 30px;
         font-size: 28px;
         text-transform: uppercase;
-        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', sans-serif;
+        font-family: Cambria, Cochin, Georgia, Times, "Times New Roman",
+          sans-serif;
         color: #333;
       }
     }
-  
+
     .time {
       font-size: 18px;
       margin: 20px 0;
-  
+
       ul {
         display: flex;
         list-style: none;
         padding: 0;
         margin: 0;
         justify-content: center;
-  
+
         li {
           margin: 0 15px;
           padding: 10px 20px;
           cursor: pointer;
           border-bottom: 2px solid transparent;
           transition: border-color 0.3s;
-  
+
           &.active {
             border-color: #f53eb2cf;
           }
-  
+
           &:hover {
             border-color: $primary-color;
           }
         }
       }
     }
-  } 
+    .menu-lang {
+      padding: 5px;
+  
+      .lang-ul {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          display: flex;
+      }
+  
+      .menu-item {
+          position: relative;
+          list-style: none;
+          width: 100%;
+          .language-selector {
+              color: #333;
+              text-decoration: none;
+              padding: 10px 20px;
+              display: block;
+              cursor: pointer;
+              border: 3px solid #f53eb2cf;
+              border-radius: 4px;
+              font-weight: 400;
+              
+              .arrow {
+                  margin-left: 15px;
+                  font-size: 12px;
+              }
+          }
+  
+          .language-dropdown {
+              display: none;
+              position: absolute;
+              top: 100%;
+              left: 0;
+              background-color: white;
+              box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+              z-index: 1;
+              width: 100%;
+              list-style: none;
+              padding: 0;
+  
+              li {
+                  a {
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      color: #000;
+                      text-decoration: none;
+                      padding: 20px 0;
+                      list-style: none;
+                      border: 1px solid #f53eb2cf;
+
+                      img {
+                          margin-right: 8px;
+                          width: 20px;
+                          height: 20px;
+                      }
+  
+                      &:hover {
+                          background-color: #f1f1f1;
+                      }
+                  }
+              }
+          }
+  
+          &:hover .language-dropdown {
+              display: block;
+          }
+      }
+  }
+
+   
+  }
 }
 .temp-switch {
   display: inline-block;
@@ -109,7 +188,7 @@ header {
   left: 25px;
   top: 25px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.513);
-  
+
   label {
     display: block;
     position: relative;
@@ -166,114 +245,114 @@ main {
   display: grid;
   grid-template-columns: 70% 30%;
   margin: 5vh 5%;
-  
+
   .table {
     background-color: $backgroundinput-color;
     border-radius: 8px;
-   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.513);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.513);
     .table-title .title-one {
       text-align: center;
       font-size: 20px;
     }
-  
-  .heading-title {
-    padding: 20px 25px;
-  }
-  }
-.wrapper {
-  width: 80%;
-  margin: 5px auto;
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 
-.top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-
-  .top-heading {
-    h3 {
-      margin: 0;
-      font-weight: 600;
+    .heading-title {
+      padding: 20px 25px;
     }
   }
+  .wrapper {
+    width: 80%;
+    margin: 5px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.513);
+  }
 
-  .main-info {
+  .top {
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
 
-    input[type="text"] {
-      padding: 10px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      margin-right: 10px;
-      width: 200px;
-      max-width: 100%;
+    .top-heading {
+      h3 {
+        margin: 0;
+        font-weight: 600;
+      }
     }
 
-    .warning {
-      color: $accent-color;
-      font-size: 12px;
-      margin: 0;
+    .main-info {
+      display: flex;
+      align-items: center;
+
+      input[type="text"] {
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px;
+        width: 200px;
+        max-width: 100%;
+      }
+
+      .warning {
+        color: $accent-color;
+        font-size: 12px;
+        margin: 0;
+      }
+
+      .photo {
+        max-width: 64px;
+        height: auto;
+        border-radius: 4px;
+      }
+    }
+  }
+
+  .middle {
+    justify-content: space-evenly;
+
+    .center-temperature {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+      font-size: 36px;
     }
 
     .photo {
-      max-width: 64px;
-      height: auto;
+      width: auto;
+      height: 120px;
       border-radius: 4px;
     }
   }
-}
-
-.middle {
-  justify-content: space-evenly;
-
-  .center-temperature {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    font-size: 36px;
-  }
-
-  .photo {
-    width: auto;
-    height: 120px;
-    border-radius: 4px;
-  }
-}
 
   .bottom {
-  border-top: 1px solid #ccc;
+    border-top: 1px solid #ccc;
 
-  .headings,
-  .weather-info {
-    padding: 7px 0;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    text-align: center;
-  }
+    .headings,
+    .weather-info {
+      padding: 7px 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      text-align: center;
+    }
 
-  .headings p,
-  .weather-info p {
-    margin: 0;
-  }
+    .headings p,
+    .weather-info p {
+      margin: 0;
+    }
 
-  .headings p {
-    font-weight: 600;
-  }
+    .headings p {
+      font-weight: 600;
+    }
 
-  .weather-info {
-    margin-bottom: 10px;
+    .weather-info {
+      margin-bottom: 10px;
+    }
   }
-}
 }
 .main-cnt {
   padding-top: 5vh;
@@ -288,11 +367,13 @@ main {
     height: auto;
     border-radius: 10%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.513);
-    transition: background-color .5s, box-shadow .5s;
+    transition:
+      background-color 0.5s,
+      box-shadow 0.5s;
     cursor: pointer;
-    .top-weath{
+    .top-weath {
       text-align: center;
-      [class^="city-hour"]{
+      [class^="city-hour"] {
         color: $backgroundinput-color;
         font-size: 18px;
       }
@@ -305,11 +386,11 @@ main {
       }
     }
     .bottom-weath {
-       text-align: center;
-       [class^="city-temp"] {
+      text-align: center;
+      [class^="city-temp"] {
         color: $backgroundinput-color;
         font-size: 18px;
-       }
+      }
     }
   }
   .elem:hover {

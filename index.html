@@ -30,6 +30,17 @@
           <li>3 link</li>
         </ul>
       </div>
+      <div class="menu-lang">
+        <ul class="lang-ul">
+            <li class="menu-item">
+                <a href="#" class="language-selector translate">Wybierz język <span class="arrow">▼</span></a>
+                <ul class="language-dropdown">
+                    <li id="pl-lang"><a href="?lang=pl" onclick="changeLanguage('pl')"><img src="img/pl_img.svg" alt="Polska Flaga"> PL</a></li>
+                    <li id="en-lang"><a href="?lang=en" onclick="changeLanguage('en')" ><img src="img/en_img.svg" alt="Brytyjska Flaga"> EN</a></li>
+                </ul>
+            </li>
+        </ul>
+      </div>
     </nav>
   </header>
   <div class="temp-switch">
@@ -64,9 +75,9 @@
     </div>
     <div class="bottom">
       <div class="headings">
-        <p>Weather:</p>
-        <p>Cloud cover:</p>
-        <p>Visibility:</p>
+        <p class="w-lang">Pogoda:</p>
+        <p class="c-lang">Zachmurzenie:</p>
+        <p class="v-lang">Widoczność:</p>
       </div>
       <div class="weather-info">
         <p class="weather"></p>
@@ -74,9 +85,9 @@
         <p class="visibility"></p>
       </div>
       <div class="headings">
-        <p>Wind spreed:</p>
-        <p>Wind direction:</p>
-        <p>Wind degree:</p>
+        <p class="s-lang">Prędkość wiatru:</p>
+        <p class="d-lang">Kierunek wiatru:</p>
+        <p class="deg-lang">Kierunek wiatru:</p>
       </div>
       <div class="weather-info">
         <p class="wind"></p>
@@ -84,9 +95,9 @@
         <p class="wind-degree"></p>
       </div>
       <div class="headings">
-        <p>Gust:</p>
-        <p>Humidity:</p>
-        <p>UV index:</p>
+        <p class="g-lang">Porywy wiatru:</p>
+        <p class="h-lang">Wilgotność:</p>
+        <p class="u-lang">Indeks UV:</p>
       </div>
       <div class="weather-info">
         <p class="gust"></p>
@@ -97,31 +108,35 @@
   </div>
   <div class="table">
     <div class="table-title">
-      <h4 class="title-one">Check weather condition</h4>
+      <h3 class="title-one">Sprawdź kondycję pogody</h3>
     </div>
     <div class="heading-table">
-      <h2 class="heading-title">Cloud cover:
-      <span class="weath-one"> </span></h2> 
+      <h4 class="heading-title">Pogoda:
+      <span class="weath-condition"> </span></h4> 
     </div>
     <div class="heading-table">
-      <h2 class="heading-title">Visibility:
-      <span class="weath-two"> </span> </h2>
+      <h4 class="heading-title">Zachmurzenie:
+      <span class="weath-one"> </span></h4> 
     </div>
     <div class="heading-table">
-      <h2 class="heading-title">Wind speed:
-      <span class="weath-three"> </span> </h2>
+      <h4 class="heading-title">Widoczność:
+      <span class="weath-two"> </span> </h4>
     </div>
     <div class="heading-table">
-      <h2 class="heading-title">Gust:
-      <span class="weath-four"> </span> </h2>
+      <h4 class="heading-title">Prędkość wiatru:
+      <span class="weath-three"> </span> </h4>
     </div>
     <div class="heading-table">
-      <h2 class="heading-title">Humidity:
-      <span class="weath-five"> </span> </h2>
+      <h4 class="heading-title">Porywy wiatru:
+      <span class="weath-four"> </span> </45>
     </div>
     <div class="heading-table">
-      <h2 class="heading-title">UV index:
-      <span class="weath-six"> </span> </h2>
+      <h4 class="heading-title">Wilgotność:
+      <span class="weath-five"> </span> </h4>
+    </div>
+    <div class="heading-table">
+      <h4 class="heading-title">Indeks UV:
+      <span class="weath-six"> </span> </h4>
     </div>
   </div>
   </main>
