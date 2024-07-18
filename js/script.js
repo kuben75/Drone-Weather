@@ -13,16 +13,17 @@ const windDir = document.querySelector(".wind-direction")
 const windDegree = document.querySelector(".wind-degree")
 const uv = document.querySelector(".uv")
 const vis = document.querySelector(".visibility")
+const weatherCondition = document.querySelector(`.weath-condition`)
 const cloudCondition = document.querySelector(`.weath-one`)
 const visCondition = document.querySelector(`.weath-two`)
 const speedCondition = document.querySelector(`.weath-three`)
 const gustCondition = document.querySelector(`.weath-four`)
 const humCondition = document.querySelector(`.weath-five`)
 const uvCondition = document.querySelector(`.weath-six`)
-const weatherCondition = document.querySelector(`.weath-condition`)
 const languagePl = document.querySelector('#pl-lang')
 const languageEn = document.querySelector("#en-lang")
-let currentLanguage = 'pl'; 
+const headings = document.querySelectorAll('h4.heading-title')
+let currentLanguage = 'pl'
 
 
 const API_LINK = "https://api.weatherapi.com/v1/forecast.json?key="
@@ -131,6 +132,7 @@ const translations = {
     tabbleTitle: "Sprawdź warunki pogodowe",
     inputPlaceholder: "Wpisz nazwę miasta...",
     weatherConditions: "bezpieczne warunki",
+    weatherCheck: "Pogoda",
     cloudCoverage: "Zachmurzenie:",
     visibility: "Widoczność:",
     windSpeed: "Prędkość wiatru:",
@@ -143,10 +145,12 @@ const translations = {
     weatherSafe: "bezpieczne warunki",
     weatherCaution: "umiarkowane warunki",
     weatherUnsafe: "niebezpieczne warunki",
+    warning: "Wpisz poprawną nazwę miasta",
   },
   en: {
     appName: "drone app",
     tabbleTitle: "Check weather conditions",
+    weatherCheck: "Weather:",
     inputPlaceholder: "Enter city name...",
     weatherConditions: "safe conditions",
     cloudCoverage: "Cloud coverage:",
@@ -161,22 +165,36 @@ const translations = {
     weatherSafe: "safe conditions",
     weatherCaution: "moderate conditions",
     weatherUnsafe: "unsafe conditions",
+    warning: "Enter correct name of city",
   },
+  
 }
 
 const changeLanguage = (lang) => {
+  currentLanguage = lang
+  console.log(`Changing language to ${lang}`);
   document.querySelector('.title-one').textContent = translations[lang].tabbleTitle
   document.querySelector('.logo h1').textContent = translations[lang].appName
   document.querySelector('.input-weather').placeholder = translations[lang].inputPlaceholder
   document.querySelector('.language-selector').textContent = translations[lang].selectLanguage
+  document.querySelector('.w-lang').textContent = translations[lang].weatherCheck
   document.querySelector('.c-lang').textContent = translations[lang].cloudCoverage
   document.querySelector('.v-lang').textContent = translations[lang].visibility
   document.querySelector('.s-lang').textContent = translations[lang].windSpeed
   document.querySelector('.d-lang').textContent = translations[lang].windDirection
   document.querySelector('.deg-lang').textContent = translations[lang].windDegre
+  document.querySelector('.g-lang').textContent = translations[lang].windGusts
+  document.querySelector('.h-lang').textContent = translations[lang].humidity
+  document.querySelector('.u-lang').textContent = translations[lang].uvIndex
+  document.querySelector('.heading-title-one').textContent = translations[lang].weatherCheck
+  document.querySelector('.heading-title-two').textContent = translations[lang].cloudCoverage
+  document.querySelector('.heading-title-three').textContent = translations[lang].visibility
+  document.querySelector('.heading-title-four').textContent = translations[lang].windSpeed
+  document.querySelector('.heading-title-five').textContent = translations[lang].windGusts
+  document.querySelector('.heading-title-six').textContent = translations[lang].humidity
+  document.querySelector('.heading-title-sev').textContent = translations[lang].uvIndex
+
 }
-
-
 const removeAccents = (str) =>
   str.replace(
     /[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/g,
@@ -186,125 +204,125 @@ const updateWeatherIcon = (code) => {
   const url = weatherIcons[code];
   url
     ? photo.setAttribute("src", url)
-    : photo.setAttribute("src", "./img/unknown.png");
+    : photo.setAttribute("src", "./img/unknown.png")
 };
 
+const fetchWeather = (city, lang = currentLanguage) => {
 
-
-const fetchWeather = (city, lang = 'pl') => {
   const URL = `${API_LINK}${API_KEY}&q=${removeAccents(city)}&lang=${lang}`
   return fetch(URL).then((response) => {
     if (!response.ok) {
       throw new Error("Error")
     }
     return response.json()
-  });
-};
+  })
+}
+
 const weatherSafetyMap = {
     safe: [1000, 1003],
     caution: [1006, 1009, 1030, 1063, 1066, 1069, 1072, 1150, 1153, 1168, 1180, 1183, 1186, 1189, 1204, 1210, 1213, 1216, 1219, 1240, 1249, 1255],
     unsafe: [1087, 1114, 1117, 1135, 1147, 1171, 1192, 1195, 1198, 1201, 1207, 1222, 1225, 1237, 1243, 1246, 1252, 1258, 1261, 1264, 1273, 1276, 1279, 1282]
 }
 
-const checkWeatherSafety = (code, lang) => {
+const checkWeatherSafety = (code, lang = currentLanguage) => {
     if (weatherSafetyMap.safe.includes(code)) 
         {
-            weatherCondition.textContent = translations[lang].weatherSafe
+            weatherCondition.textContent =  translations[lang].weatherSafe
             weatherCondition.style.color = "green"
         }
     if (weatherSafetyMap.caution.includes(code)) { 
-        weatherCondition.textContent = 'umiarkowane warunki'
+        weatherCondition.textContent =  translations[lang].weatherCaution
         weatherCondition.style.color = "orange"
 
     }
     if (weatherSafetyMap.unsafe.includes(code)) 
         {
-            weatherCondition.textContent = 'niebezpieczne warunki'
+            weatherCondition.textContent = translations[lang].weatherUnsafe
             weatherCondition.style.color = "red"
         }
-};
+}
+const checkCloud = (data, lang) => {
 
-const checkCloud = (data) => {
-  const updateCloud = `${data.current.cloud}`;
+  const updateCloud = `${data.current.cloud}`
   if (updateCloud <= 20) {
-    cloudCondition.textContent = `${data.current.cloud}% - bezpieczne warunki`
+    cloudCondition.textContent = `${updateCloud}% - ${translations[lang].weatherSafe}`
     cloudCondition.style.color = "green"
   } else if (updateCloud > 20 && updateCloud <= 50) {
-    cloudCondition.textContent = `${data.current.cloud}% - umiarkowane warunki`
+    cloudCondition.textContent = `${updateCloud}% - ${translations[lang].weatherCaution}`
     cloudCondition.style.color = "orange"
   } else {
-    cloudCondition.textContent = `${data.current.cloud}% - niebezpieczne warunki`
+    cloudCondition.textContent = `${updateCloud}% - ${translations[lang].weatherUnsafe}`
     cloudCondition.style.color = "red"
   }
 }
-const checkVisibility = (data) => {
+
+const checkVisibility = (data, lang) => {
   const updateVis = `${data.current.vis_km}`
-  console.log(updateVis)
   if (updateVis >= 5) {
-    visCondition.textContent = `${updateVis} km - bezpieczne warunki`
+    visCondition.textContent = `${updateVis} km - ${translations[lang].weatherSafe}`
     visCondition.style.color = "green"
   } else if (updateVis > 1 && updateVis < 5) {
-    visCondition.textContent = `${updateVis} km- umiarkowane warunki`
+    visCondition.textContent = `${updateVis} km- ${translations[lang].weatherCaution}`
     visCondition.style.color = "orange"
   } else {
-    visCondition.textContent = `${updateVis} km- niebezpieczne warunki`
+    visCondition.textContent = `${updateVis} km- ${translations[lang].weatherUnsafe}`
     visCondition.style.color = "red"
   }
 };
-const checkSpeed = (data) => {
+const checkSpeed = (data, lang) => {
   const updateSpeed = `${Math.floor(data.current.wind_kph)}`
 
   if (updateSpeed <= 15) {
-    speedCondition.textContent = `${updateSpeed} km/h - bezpieczne warunki`
+    speedCondition.textContent = `${updateSpeed} km/h - ${translations[lang].weatherSafe}`
     speedCondition.style.color = "green"
   } else if (updateSpeed > 15 && updateSpeed <= 30) {
-    speedCondition.textContent = `${updateSpeed} km/h- umiarkowane warunki`
+    speedCondition.textContent = `${updateSpeed} km/h - ${translations[lang].weatherCaution}`
     speedCondition.style.color = "orange"
   } else {
-    speedCondition.textContent = `${updateSpeed} km/h- niebezpieczne warunki`
+    speedCondition.textContent = `${updateSpeed} km/h - ${translations[lang].weatherUnsafe}`
     speedCondition.style.color = "red"
   }
 };
 
-const checkGust = (data) => {
+const checkGust = (data, lang) => {
   const updateGust = `${data.current.gust_kph}`;
 
   if (updateGust < 20) {
-    gustCondition.textContent = `${updateGust} km/h - bezpieczne warunki`;
+    gustCondition.textContent = `${updateGust} km/h - ${translations[lang].weatherSafe}`
     gustCondition.style.color = "green";
   } else if (updateGust >= 20 && updateGust <= 40) {
-    gustCondition.textContent = `${updateGust} km/h- umiarkowane warunki`;
+    gustCondition.textContent = `${updateGust} km/h-${translations[lang].weatherCaution}`
     gustCondition.style.color = "orange";
   } else {
-    gustCondition.textContent = `${updateGust} km/h- niebezpieczne warunki`;
+    gustCondition.textContent = `${updateGust} km/h- ${translations[lang].weatherUnsafe}`
     gustCondition.style.color = "red";
   }
 };
-const checkHum = (data) => {
+const checkHum = (data, lang) => {
   const updateHum = `${data.current.humidity}`
 
   if (updateHum <= 50) {
-    humCondition.textContent = `${updateHum} % - bezpieczne warunki`;
+    humCondition.textContent = `${updateHum} % - ${translations[lang].weatherSafe}`
     humCondition.style.color = "green";
   } else if (updateHum > 50 && updateHum <= 70) {
-    humCondition.textContent = `${updateHum} %- umiarkowane warunki`;
+    humCondition.textContent = `${updateHum} %- ${translations[lang].weatherCaution}`
     humCondition.style.color = "orange";
   } else {
-    humCondition.textContent = `${updateHum} %- niebezpieczne warunki`;
+    humCondition.textContent = `${updateHum} %- ${translations[lang].weatherUnsafe}`
     humCondition.style.color = "red";
   }
 };
-const checkUv = (data) => {
+const checkUv = (data, lang) => {
   const updateUv = data.current.uv;
 
   if (updateUv < 5) {
-    uvCondition.textContent = `${updateUv}  - bezpieczne warunki`;
+    uvCondition.textContent = `${updateUv}  - ${translations[lang].weatherSafe}`
     uvCondition.style.color = "green";
   } else if (updateUv >= 6 && updateUv < 11) {
-    uvCondition.textContent = `${updateUv} - umiarkowane warunki`;
+    uvCondition.textContent = `${updateUv} - ${translations[lang].weatherCaution}`
     uvCondition.style.color = "orange";
   } else {
-    uvCondition.textContent = `${updateUv} - niebezpieczne warunki`;
+    uvCondition.textContent = `${updateUv} - ${translations[lang].weatherUnsafe}`
     uvCondition.style.color = "red";
   }
 };
@@ -345,59 +363,46 @@ const updateNextWeather = (data) => {
   }
 };
 
-const updateWeatherInfo = (data, lang = 'pl') => {
+const updateWeatherInfo = (data, lang = currentLanguage) => {
   const locationName = data.location.name;
   cityName.textContent = locationName;
-
   const updateWeath = data.current.condition.text;
   weather.textContent = updateWeath;
-
   const updateTemp = `${Math.floor(data.current.temp_c)} ℃`;
   temperature.textContent = updateTemp;
-
   const fahr = (data.current.temp_c * 1.8 + 32).toFixed(0);
   temperature.dataset.fahrenheit = fahr;
   const temp = `${Math.floor(data.current.temp_c)} ℃`;
   temperature.dataset.celsious = temp;
-
   const updateHum = `${data.current.humidity}%`;
   humidity.textContent = updateHum;
-
   const updateTime = data.location.localtime;
   localTime.textContent = updateTime;
-
   const updateWind = `${Math.floor(data.current.wind_kph)} km/h`;
   wind.textContent = updateWind;
-
   const updateCloud = `${data.current.cloud}%`;
   cloud.textContent = updateCloud;
-
   const updateGust = `${Math.floor(data.current.gust_kph)} km/h`;
   gust.textContent = updateGust;
-
   const updateDir = data.current.wind_dir;
   windDir.textContent = updateDir;
-
   const updateDeg = `${data.current.wind_degree} °`;
   windDegree.textContent = updateDeg;
-
   const updateUv = data.current.uv;
   uv.textContent = updateUv;
-
   const updateVis = `${data.current.vis_km} km`;
   vis.textContent = updateVis;
   const code = data.current.condition.code;
-
   updateWeatherIcon(code)
-  updateNextWeather(data, lang)
+  updateNextWeather(data)
   checkWeatherSafety(code, lang)
-  checkCloud(data, lang);
-  checkVisibility(data, lang);
-  checkSpeed(data, lang);
-  checkGust(data, lang);
-  checkHum(data, lang);
-  checkUv(data, lang);
-  console.log(data);
+  checkCloud(data, lang)
+  checkVisibility(data, lang)
+  checkSpeed(data, lang)
+  checkGust(data, lang)
+  checkHum(data, lang)
+  checkUv(data, lang)
+  console.log(data)
 };
 
 const defaultWeather = () => {
@@ -409,16 +414,15 @@ const defaultWeather = () => {
 
 const getWeather = () => {
   const city = input.value.trim();
-  const lang = currentLanguage;
-  if (city) {
-    fetchWeather(city, lang)
+  const lang = currentLanguage
+  const defaultCity = 'Warszawa';
+  const selectedCity = city || defaultCity;
+ 
+    fetchWeather(selectedCity, lang)
       .then(updateWeatherInfo)
       .catch(() => {
         warning.textContent = translations[lang].warning;
-      });
-  } else {
-    warning.textContent = translations[lang].warning;
-  }
+      })
 };
 
 const handleEnterKey = (e) => {
@@ -438,15 +442,42 @@ const celToFhr = () => {
   }
 };
 
+document.addEventListener("DOMContentLoaded", function() {
+  const olcardsElements = document.querySelectorAll('.olcards li');
+  const firstElementObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+  
+        setTimeout(() => {
+          olcardsElements.forEach((element, index) => {
+            if (index > 0) {
+              setTimeout(() => {
+                element.classList.add('visible');
+              }, index * 400); 
+            }
+          });
+        }, 500);
+      }
+    });
+  });
+  
+  firstElementObserver.observe(olcardsElements[0]);
+  });
 changeTemp.addEventListener("change", celToFhr);
 input.addEventListener("keyup", handleEnterKey);
 document.addEventListener("DOMContentLoaded", defaultWeather);
 
 document.querySelector('#pl-lang a').addEventListener('click', (e) => {
   e.preventDefault();
-  changeLanguage('pl');
-});
+   currentLanguage = 'pl'
+   changeLanguage('pl')
+   getWeather()
+})
 document.querySelector('#en-lang a').addEventListener('click', (e) => {
-  e.preventDefault();
+  e.preventDefault()
+  currentLanguage = 'en'
   changeLanguage('en');
-});
+  getWeather();
+})

@@ -10,6 +10,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+  crossorigin=""></script>
+  <script src="https://kit.fontawesome.com/e6e67f4e19.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -108,36 +115,51 @@
   </div>
   <div class="table">
     <div class="table-title">
-      <h3 class="title-one">Sprawdź kondycję pogody</h3>
-    </div>
-    <div class="heading-table">
-      <h4 class="heading-title">Pogoda:
-      <span class="weath-condition"> </span></h4> 
-    </div>
-    <div class="heading-table">
-      <h4 class="heading-title">Zachmurzenie:
-      <span class="weath-one"> </span></h4> 
-    </div>
-    <div class="heading-table">
-      <h4 class="heading-title">Widoczność:
-      <span class="weath-two"> </span> </h4>
-    </div>
-    <div class="heading-table">
-      <h4 class="heading-title">Prędkość wiatru:
-      <span class="weath-three"> </span> </h4>
-    </div>
-    <div class="heading-table">
-      <h4 class="heading-title">Porywy wiatru:
-      <span class="weath-four"> </span> </45>
-    </div>
-    <div class="heading-table">
-      <h4 class="heading-title">Wilgotność:
-      <span class="weath-five"> </span> </h4>
-    </div>
-    <div class="heading-table">
-      <h4 class="heading-title">Indeks UV:
-      <span class="weath-six"> </span> </h4>
-    </div>
+      <h2 class="title-one">Sprawdź warunki pogody:</h2>
+      <ol class="olcards">
+        <li style="--cardColor:#f2f2f2">
+          <div class="content">
+            <div class="heading-title-one">Pogoda:</div>
+            <span class="weath-condition"></span>
+          </div>
+        </li>
+        <li style="--cardColor:#f2f2f2">
+          <div class="content">
+            <div class="heading-title-two">Zachmurzenie:</div>
+            <span class="weath-one"></span>
+          </div>
+        </li>
+        <li style="--cardColor:#f2f2f2">
+          <div class="content">
+            <div class="heading-title-three">Widoczność:</div>
+            <span class="weath-two"></span>
+          </div>
+        </li>
+        <li style="--cardColor:#f2f2f2">
+          <div class="content">
+            <div class="heading-title-four">Prędkość wiatru:</div>
+            <span class="weath-three"></span>
+          </div>
+        </li>
+        <li style="--cardColor:#f2f2f2">
+          <div class="content">
+            <div class="heading-title-five">Poryw wiatru:</div>
+            <span class="weath-four"></span>
+          </div>
+        </li>
+        <li style="--cardColor:#f2f2f2">
+          <div class="content">
+            <div class="heading-title-six">Wilgotność:</div>
+            <span class="weath-five"></span>
+          </div>
+        </li>
+        <li style="--cardColor:#f2f2f2">
+          <div class="content">
+            <div class="heading-title-sev">Indeks UV:</div>
+            <span class="weath-six"></span>
+          </div>
+        </li>
+      </ol>
   </div>
   </main>
   <section class="main-cnt">
@@ -220,8 +242,34 @@
       </div>
     </div>
   </section>
+  <section id="map">
 
+  </section>
+  <section id="contact" class="contact py5">
+    <h2 class="section-title">kontakt</h2>
+    <div class="underline"></div>
+
+    <div class="container">
+            <div class="head">
+                <h3>główna siedziba</h3>
+                <p>ul. Ładna 43</p>
+                <p>64-510 Wronki</p>
+                <p>+48 000 000 000</p>
+                <p>droneweather@gmail.com</p>
+            </div>
+            <div class="sm">
+              <h3>social media</h3>
+              <i class="fa-brands fa-facebook icon1"></i>
+              <i class="fa-brands fa-instagram icon2"></i>
+              <i class="fa-brands fa-x-twitter icon3"></i>
+              <i class="fa-brands fa-tiktok icon4"></i>
+            </div>
+            </div>
+    </div>
+    <div class="contact-shadow"></div>
+  </section>
   <script src="js/script.js"></script>
+  <script src="js/map.js"></script>
 </body>
 
 </html>
