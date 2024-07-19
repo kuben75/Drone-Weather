@@ -128,7 +128,7 @@ const weatherIcons = {
 
 const translations = {
   pl: {
-    appName: "apka dla droniarzy",
+    contact: "Kontakt",
     tabbleTitle: "Sprawdź warunki pogodowe",
     inputPlaceholder: "Wpisz nazwę miasta...",
     weatherConditions: "bezpieczne warunki",
@@ -146,9 +146,10 @@ const translations = {
     weatherCaution: "umiarkowane warunki",
     weatherUnsafe: "niebezpieczne warunki",
     warning: "Wpisz poprawną nazwę miasta",
+    Headquarters: "Siedziba główna",
   },
   en: {
-    appName: "drone app",
+    contact: "Contact",
     tabbleTitle: "Check weather conditions",
     weatherCheck: "Weather:",
     inputPlaceholder: "Enter city name...",
@@ -166,6 +167,7 @@ const translations = {
     weatherCaution: "moderate conditions",
     weatherUnsafe: "unsafe conditions",
     warning: "Enter correct name of city",
+    Headquarters: "Headquarters",
   },
   
 }
@@ -174,7 +176,6 @@ const changeLanguage = (lang) => {
   currentLanguage = lang
   console.log(`Changing language to ${lang}`);
   document.querySelector('.title-one').textContent = translations[lang].tabbleTitle
-  document.querySelector('.logo h1').textContent = translations[lang].appName
   document.querySelector('.input-weather').placeholder = translations[lang].inputPlaceholder
   document.querySelector('.language-selector').textContent = translations[lang].selectLanguage
   document.querySelector('.w-lang').textContent = translations[lang].weatherCheck
@@ -193,6 +194,8 @@ const changeLanguage = (lang) => {
   document.querySelector('.heading-title-five').textContent = translations[lang].windGusts
   document.querySelector('.heading-title-six').textContent = translations[lang].humidity
   document.querySelector('.heading-title-sev').textContent = translations[lang].uvIndex
+  document.querySelector('.section-title').textContent = translations[lang].contact
+  document.querySelector('.footer-title').textContent = translations[lang].Headquarters
 
 }
 const removeAccents = (str) =>
@@ -289,13 +292,13 @@ const checkGust = (data, lang) => {
 
   if (updateGust < 20) {
     gustCondition.textContent = `${updateGust} km/h - ${translations[lang].weatherSafe}`
-    gustCondition.style.color = "green";
+    gustCondition.style.color = "green"
   } else if (updateGust >= 20 && updateGust <= 40) {
     gustCondition.textContent = `${updateGust} km/h-${translations[lang].weatherCaution}`
-    gustCondition.style.color = "orange";
+    gustCondition.style.color = "orange"
   } else {
     gustCondition.textContent = `${updateGust} km/h- ${translations[lang].weatherUnsafe}`
-    gustCondition.style.color = "red";
+    gustCondition.style.color = "red"
   }
 };
 const checkHum = (data, lang) => {
@@ -303,96 +306,96 @@ const checkHum = (data, lang) => {
 
   if (updateHum <= 50) {
     humCondition.textContent = `${updateHum} % - ${translations[lang].weatherSafe}`
-    humCondition.style.color = "green";
-  } else if (updateHum > 50 && updateHum <= 70) {
+    humCondition.style.color = "green"
+  } else if (updateHum > 50 || updateHum <= 70) {
     humCondition.textContent = `${updateHum} %- ${translations[lang].weatherCaution}`
-    humCondition.style.color = "orange";
+    humCondition.style.color = "orange"
   } else {
     humCondition.textContent = `${updateHum} %- ${translations[lang].weatherUnsafe}`
-    humCondition.style.color = "red";
+    humCondition.style.color = "red"
   }
 };
 const checkUv = (data, lang) => {
-  const updateUv = data.current.uv;
+  const updateUv = data.current.uv
 
   if (updateUv < 5) {
     uvCondition.textContent = `${updateUv}  - ${translations[lang].weatherSafe}`
-    uvCondition.style.color = "green";
-  } else if (updateUv >= 6 && updateUv < 11) {
+    uvCondition.style.color = "green"
+  } else if (updateUv >= 6 || updateUv < 11) {
     uvCondition.textContent = `${updateUv} - ${translations[lang].weatherCaution}`
-    uvCondition.style.color = "orange";
+    uvCondition.style.color = "orange"
   } else {
     uvCondition.textContent = `${updateUv} - ${translations[lang].weatherUnsafe}`
-    uvCondition.style.color = "red";
+    uvCondition.style.color = "red"
   }
 };
 
 const updateNextWeather = (data) => {
-  const currentTime = data.location.localtime.split(" ")[1].split(":");
-  const currentHour = parseInt(currentTime[0], 10);
+  const currentTime = data.location.localtime.split(" ")[1].split(":")
+  const currentHour = parseInt(currentTime[0], 10)
 
-  const hourData = data.forecast.forecastday[0].hour;
+  const hourData = data.forecast.forecastday[0].hour
   const startIndex = hourData.findIndex(
     (hour) =>
       parseInt(hour.time.split(" ")[1].split(":")[0], 10) === currentHour
   );
 
   for (let i = 0; i < 6; i++) {
-    const index = (startIndex + i + 1) % 24;
+    const index = (startIndex + i + 1) % 24
 
-    const cityHour = document.querySelector(`.city-hour${i}`);
+    const cityHour = document.querySelector(`.city-hour${i}`)
     if (cityHour) {
-      const timeOnly = hourData[index].time.split(" ")[1];
-      cityHour.textContent = timeOnly;
+      const timeOnly = hourData[index].time.split(" ")[1]
+      cityHour.textContent = timeOnly
     }
 
-    const cityWeather = document.querySelector(`.photo${i}`);
+    const cityWeather = document.querySelector(`.photo${i}`)
     if (cityWeather) {
-      const weatherCode = hourData[index].condition.code;
-      const weatherIconUrl = weatherIcons[weatherCode];
+      const weatherCode = hourData[index].condition.code
+      const weatherIconUrl = weatherIcons[weatherCode]
       weatherIconUrl
         ? cityWeather.setAttribute("src", weatherIconUrl)
-        : cityWeather.setAttribute("src", "./img/unknown.png");
+        : cityWeather.setAttribute("src", "./img/unknown.png")
     }
 
-    const cityTemp = document.querySelector(`.city-temp${i}`);
+    const cityTemp = document.querySelector(`.city-temp${i}`)
     if (cityTemp) {
-      const tempData = hourData[index].temp_c;
-      cityTemp.textContent = `${Math.floor(tempData)} ℃`;
+      const tempData = hourData[index].temp_c
+      cityTemp.textContent = `${Math.floor(tempData)} ℃`
     }
   }
 };
 
 const updateWeatherInfo = (data, lang = currentLanguage) => {
-  const locationName = data.location.name;
-  cityName.textContent = locationName;
-  const updateWeath = data.current.condition.text;
-  weather.textContent = updateWeath;
-  const updateTemp = `${Math.floor(data.current.temp_c)} ℃`;
-  temperature.textContent = updateTemp;
-  const fahr = (data.current.temp_c * 1.8 + 32).toFixed(0);
-  temperature.dataset.fahrenheit = fahr;
-  const temp = `${Math.floor(data.current.temp_c)} ℃`;
-  temperature.dataset.celsious = temp;
-  const updateHum = `${data.current.humidity}%`;
-  humidity.textContent = updateHum;
-  const updateTime = data.location.localtime;
-  localTime.textContent = updateTime;
-  const updateWind = `${Math.floor(data.current.wind_kph)} km/h`;
-  wind.textContent = updateWind;
-  const updateCloud = `${data.current.cloud}%`;
-  cloud.textContent = updateCloud;
-  const updateGust = `${Math.floor(data.current.gust_kph)} km/h`;
-  gust.textContent = updateGust;
-  const updateDir = data.current.wind_dir;
-  windDir.textContent = updateDir;
-  const updateDeg = `${data.current.wind_degree} °`;
-  windDegree.textContent = updateDeg;
-  const updateUv = data.current.uv;
-  uv.textContent = updateUv;
-  const updateVis = `${data.current.vis_km} km`;
+  const locationName = data.location.name
+  cityName.textContent = locationName
+  const updateWeath = data.current.condition.text
+  weather.textContent = updateWeath
+  const updateTemp = `${Math.floor(data.current.temp_c)} ℃`
+  temperature.textContent = updateTemp
+  const fahr = (data.current.temp_c * 1.8 + 32).toFixed(0)
+  temperature.dataset.fahrenheit = fahr
+  const temp = `${Math.floor(data.current.temp_c)} ℃`
+  temperature.dataset.celsious = temp
+  const updateHum = `${data.current.humidity}%`
+  humidity.textContent = updateHum
+  const updateTime = data.location.localtime
+  localTime.textContent = updateTime
+  const updateWind = `${Math.floor(data.current.wind_kph)} km/h`
+  wind.textContent = updateWind
+  const updateCloud = `${data.current.cloud}%`
+  cloud.textContent = updateCloud
+  const updateGust = `${Math.floor(data.current.gust_kph)} km/h`
+  gust.textContent = updateGust
+  const updateDir = data.current.wind_dir
+  windDir.textContent = updateDir
+  const updateDeg = `${data.current.wind_degree} °`
+  windDegree.textContent = updateDeg
+  const updateUv = data.current.uv
+  uv.textContent = updateUv
+  const updateVis = `${data.current.vis_km} km`
   vis.textContent = updateVis;
-  const code = data.current.condition.code;
+  const code = data.current.condition.code
   updateWeatherIcon(code)
   updateNextWeather(data)
   checkWeatherSafety(code, lang)
@@ -406,33 +409,33 @@ const updateWeatherInfo = (data, lang = currentLanguage) => {
 };
 
 const defaultWeather = () => {
-  const defaultCity = "Warszawa";
+  const defaultCity = "Warszawa"
   fetchWeather(defaultCity)
     .then(updateWeatherInfo)
-    .catch((err) => console.error(err));
+    .catch((err) => console.error(err))
 };
 
 const getWeather = () => {
-  const city = input.value.trim();
+  const city = input.value.trim()
   const lang = currentLanguage
-  const defaultCity = 'Warszawa';
-  const selectedCity = city || defaultCity;
+  const defaultCity = 'Warszawa'
+  const selectedCity = city || defaultCity
  
     fetchWeather(selectedCity, lang)
       .then(updateWeatherInfo)
       .catch(() => {
-        warning.textContent = translations[lang].warning;
+        warning.textContent = translations[lang].warning
       })
 };
 
 const handleEnterKey = (e) => {
   if (e.key === "Enter") {
-    getWeather();
+    getWeather()
   }
 };
 
-const changeTemp = document.querySelector("#temp-toggle");
-const sliderOne = document.querySelector(".slider");
+const changeTemp = document.querySelector("#temp-toggle")
+const sliderOne = document.querySelector(".slider")
 const celToFhr = () => {
   sliderOne.classList.toggle("toright");
   if (sliderOne.classList.contains("toright")) {
@@ -440,7 +443,7 @@ const celToFhr = () => {
   } else {
     temperature.textContent = `${temperature.dataset.celsious}`;
   }
-};
+}
 
 document.addEventListener("DOMContentLoaded", function() {
   const olcardsElements = document.querySelectorAll('.olcards li');
@@ -454,20 +457,27 @@ document.addEventListener("DOMContentLoaded", function() {
           olcardsElements.forEach((element, index) => {
             if (index > 0) {
               setTimeout(() => {
-                element.classList.add('visible');
-              }, index * 400); 
+                element.classList.add('visible')
+              }, index * 400) 
             }
-          });
-        }, 500);
+          })
+        }, 500)
       }
-    });
-  });
+    })
+  })
   
   firstElementObserver.observe(olcardsElements[0]);
   });
-changeTemp.addEventListener("change", celToFhr);
-input.addEventListener("keyup", handleEnterKey);
-document.addEventListener("DOMContentLoaded", defaultWeather);
+
+
+  document.querySelector('.menu-toggle').addEventListener('click', () => {
+    document.querySelector('.menu-toggle').classList.toggle('closeMenu')
+    document.querySelector('ul').classList.toggle('showMenu')
+})
+
+changeTemp.addEventListener("change", celToFhr)
+input.addEventListener("keyup", handleEnterKey)
+document.addEventListener("DOMContentLoaded", defaultWeather)
 
 document.querySelector('#pl-lang a').addEventListener('click', (e) => {
   e.preventDefault();
@@ -478,6 +488,6 @@ document.querySelector('#pl-lang a').addEventListener('click', (e) => {
 document.querySelector('#en-lang a').addEventListener('click', (e) => {
   e.preventDefault()
   currentLanguage = 'en'
-  changeLanguage('en');
-  getWeather();
+  changeLanguage('en')
+  getWeather()
 })
