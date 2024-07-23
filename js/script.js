@@ -1,29 +1,51 @@
-const input = document.querySelector(".input-weather")
-const cityName = document.querySelector(".city-name")
-const localTime = document.querySelector(".local-time")
-const warning = document.querySelector(".warning")
-const photo = document.querySelector(".photo")
-const weather = document.querySelector(".weather")
-const temperature = document.querySelector(".temperature")
-const humidity = document.querySelector(".humidity")
-const wind = document.querySelector(".wind")
-const cloud = document.querySelector(".cloud")
-const gust = document.querySelector(".gust")
-const windDir = document.querySelector(".wind-direction")
-const windDegree = document.querySelector(".wind-degree")
-const uv = document.querySelector(".uv")
-const vis = document.querySelector(".visibility")
-const weatherCondition = document.querySelector(`.weath-condition`)
-const cloudCondition = document.querySelector(`.weath-one`)
-const visCondition = document.querySelector(`.weath-two`)
-const speedCondition = document.querySelector(`.weath-three`)
-const gustCondition = document.querySelector(`.weath-four`)
-const humCondition = document.querySelector(`.weath-five`)
-const uvCondition = document.querySelector(`.weath-six`)
+const input = document.querySelector(".main-info__input-container-text")
+const cityName = document.querySelector(".main-content__top-city-name")
+const localTime = document.querySelector(".main-content__local-time")
+const warning = document.querySelector(".main-info__input-container-warning")
+const photo = document.querySelector(".main-content__middle-photo")
+const weather = document.querySelector(".weather-info__weather")
+const temperature = document.querySelector(".main-content__temperature")
+const humidity = document.querySelector(".weather-info__humidity")
+const wind = document.querySelector(".weather-info__wind")
+const cloud = document.querySelector(".weather-info__cloud")
+const gust = document.querySelector(".weather-info__gust")
+const windDir = document.querySelector(".weather-info__wind-direction")
+const windDegree = document.querySelector(".weather-info__wind-degree")
+const uv = document.querySelector(".weather-info__uv")
+const vis = document.querySelector(".weather-info__visibility")
+const weatherCondition = document.querySelector(`.table__weather-condition`)
+const cloudCondition = document.querySelector(`.table__cloud-cover`)
+const visCondition = document.querySelector(`.table__visibility`)
+const speedCondition = document.querySelector(`.table__wind-speed`)
+const gustCondition = document.querySelector(`.table__wind-gusts`)
+const humCondition = document.querySelector(`.table__humidity`)
+const uvCondition = document.querySelector(`.table__uv-index`)
 const languagePl = document.querySelector('#pl-lang')
 const languageEn = document.querySelector("#en-lang")
 const headings = document.querySelectorAll('h4.heading-title')
 let currentLanguage = 'pl'
+
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+  var expires = "expires=" + d.toUTCString(); // Użyj toUTCString() zamiast toGMTString()
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+
+}
+
+// Funkcja do pobierania wartości cookie
+function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(";");
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i].trim();
+    if (c.indexOf(name) === 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
 
 
 const API_LINK = "https://api.weatherapi.com/v1/forecast.json?key="
@@ -147,6 +169,9 @@ const translations = {
     weatherUnsafe: "niebezpieczne warunki",
     warning: "Wpisz poprawną nazwę miasta",
     Headquarters: "Siedziba główna",
+    weatherSlide: "Pogoda",
+    mapTrans: "Mapa",
+    contSlide: "Kontakt",
   },
   en: {
     contact: "Contact",
@@ -168,6 +193,9 @@ const translations = {
     weatherUnsafe: "unsafe conditions",
     warning: "Enter correct name of city",
     Headquarters: "Headquarters",
+    weatherSlide: "Weather",
+    mapTrans: "Map",
+    contSlide: "Contact",
   },
   
 }
@@ -175,43 +203,44 @@ const translations = {
 const changeLanguage = (lang) => {
   currentLanguage = lang
   console.log(`Changing language to ${lang}`);
-  document.querySelector('.title-one').textContent = translations[lang].tabbleTitle
-  document.querySelector('.input-weather').placeholder = translations[lang].inputPlaceholder
-  document.querySelector('.language-selector').textContent = translations[lang].selectLanguage
-  document.querySelector('.w-lang').textContent = translations[lang].weatherCheck
-  document.querySelector('.c-lang').textContent = translations[lang].cloudCoverage
-  document.querySelector('.v-lang').textContent = translations[lang].visibility
-  document.querySelector('.s-lang').textContent = translations[lang].windSpeed
-  document.querySelector('.d-lang').textContent = translations[lang].windDirection
-  document.querySelector('.deg-lang').textContent = translations[lang].windDegre
-  document.querySelector('.g-lang').textContent = translations[lang].windGusts
-  document.querySelector('.h-lang').textContent = translations[lang].humidity
-  document.querySelector('.u-lang').textContent = translations[lang].uvIndex
-  document.querySelector('.heading-title-one').textContent = translations[lang].weatherCheck
-  document.querySelector('.heading-title-two').textContent = translations[lang].cloudCoverage
-  document.querySelector('.heading-title-three').textContent = translations[lang].visibility
-  document.querySelector('.heading-title-four').textContent = translations[lang].windSpeed
-  document.querySelector('.heading-title-five').textContent = translations[lang].windGusts
-  document.querySelector('.heading-title-six').textContent = translations[lang].humidity
-  document.querySelector('.heading-title-sev').textContent = translations[lang].uvIndex
-  document.querySelector('.section-title').textContent = translations[lang].contact
-  document.querySelector('.footer-title').textContent = translations[lang].Headquarters
+  document.querySelector('.table__title-text').textContent = translations[lang].tabbleTitle
+  document.querySelector('.main-info__input-container-text').placeholder = translations[lang].inputPlaceholder
+  document.querySelector('.nav__language-selector').textContent = translations[lang].selectLanguage
+  document.querySelector('.headings__weather').textContent = translations[lang].weatherCheck
+  document.querySelector('.headings__cloud-cover').textContent = translations[lang].cloudCoverage
+  document.querySelector('.headings__visibility').textContent = translations[lang].visibility
+  document.querySelector('.headings__wind-speed').textContent = translations[lang].windSpeed
+  document.querySelector('.headings__wind-direction').textContent = translations[lang].windDirection
+  document.querySelector('.headings__wind-degree').textContent = translations[lang].windDegre
+  document.querySelector('.headings__wind-gusts').textContent = translations[lang].windGusts
+  document.querySelector('.headings__humidity').textContent = translations[lang].humidity
+  document.querySelector('.headings__uv-index').textContent = translations[lang].uvIndex
+  document.querySelector('.table__list-heading-one').textContent = translations[lang].weatherCheck
+  document.querySelector('.table__list-heading-two').textContent = translations[lang].cloudCoverage
+  document.querySelector('.table__list-heading-three').textContent = translations[lang].visibility
+  document.querySelector('.table__list-heading-four').textContent = translations[lang].windSpeed
+  document.querySelector('.table__list-heading-five').textContent = translations[lang].windGusts
+  document.querySelector('.table__list-heading-six').textContent = translations[lang].humidity
+  document.querySelector('.table__list-heading-sev').textContent = translations[lang].uvIndex
+  document.querySelector('.contact__title').textContent = translations[lang].contact
+  document.querySelector('.contact__container-title').textContent = translations[lang].Headquarters
+  document.querySelector('#weathSlide').textContent = translations[lang].weatherSlide
+  document.querySelector('#mapSlide').textContent = translations[lang].mapTrans
+  document.querySelector('#contactSlide').textContent = translations[lang].contSlide
 
 }
 const removeAccents = (str) =>
   str.replace(
     /[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/g,
     (char) => "acelnoszzACELNOSZZ"["ąćęłńóśźżĄĆĘŁŃÓŚŹŻ".indexOf(char)]
-  );
+  )
 const updateWeatherIcon = (code) => {
   const url = weatherIcons[code];
   url
     ? photo.setAttribute("src", url)
     : photo.setAttribute("src", "./img/unknown.png")
-};
-
+}
 const fetchWeather = (city, lang = currentLanguage) => {
-
   const URL = `${API_LINK}${API_KEY}&q=${removeAccents(city)}&lang=${lang}`
   return fetch(URL).then((response) => {
     if (!response.ok) {
@@ -343,13 +372,13 @@ const updateNextWeather = (data) => {
   for (let i = 0; i < 6; i++) {
     const index = (startIndex + i + 1) % 24
 
-    const cityHour = document.querySelector(`.city-hour${i}`)
+    const cityHour = document.querySelector(`.weather-data__time${i}`)
     if (cityHour) {
       const timeOnly = hourData[index].time.split(" ")[1]
       cityHour.textContent = timeOnly
     }
 
-    const cityWeather = document.querySelector(`.photo${i}`)
+    const cityWeather = document.querySelector(`.weather-data__photo${i}`)
     if (cityWeather) {
       const weatherCode = hourData[index].condition.code
       const weatherIconUrl = weatherIcons[weatherCode]
@@ -358,7 +387,7 @@ const updateNextWeather = (data) => {
         : cityWeather.setAttribute("src", "./img/unknown.png")
     }
 
-    const cityTemp = document.querySelector(`.city-temp${i}`)
+    const cityTemp = document.querySelector(`.weather-data__temperature${i}`)
     if (cityTemp) {
       const tempData = hourData[index].temp_c
       cityTemp.textContent = `${Math.floor(tempData)} ℃`
@@ -405,37 +434,30 @@ const updateWeatherInfo = (data, lang = currentLanguage) => {
   checkGust(data, lang)
   checkHum(data, lang)
   checkUv(data, lang)
-  console.log(data)
 };
-
 const defaultWeather = () => {
-  const defaultCity = "Warszawa"
+ 
+  const defaultCity = getCookie("city") || "Warszawa";
   fetchWeather(defaultCity)
     .then(updateWeatherInfo)
-    .catch((err) => console.error(err))
-};
+    .catch((err) => console.error(err));
+}
 
 const getWeather = () => {
-  const city = input.value.trim()
-  const lang = currentLanguage
-  const defaultCity = 'Warszawa'
-  const selectedCity = city || defaultCity
- 
-    fetchWeather(selectedCity, lang)
-      .then(updateWeatherInfo)
-      .catch(() => {
-        warning.textContent = translations[lang].warning
-      })
-};
-
-const handleEnterKey = (e) => {
-  if (e.key === "Enter") {
-    getWeather()
-  }
-};
+  const city = input.value.trim();
+  const lang = currentLanguage;
+  const defaultCity = 'Warszawa';
+  const selectedCity = city || defaultCity;
+  setCookie("city", city, 3);
+  fetchWeather(selectedCity, lang)
+    .then(updateWeatherInfo)
+    .catch(() => {
+      warning.textContent = translations[lang].warning;
+    });
+}      
 
 const changeTemp = document.querySelector("#temp-toggle")
-const sliderOne = document.querySelector(".slider")
+const sliderOne = document.querySelector(".temp-switch__slider")
 const celToFhr = () => {
   sliderOne.classList.toggle("toright");
   if (sliderOne.classList.contains("toright")) {
@@ -446,7 +468,7 @@ const celToFhr = () => {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  const olcardsElements = document.querySelectorAll('.olcards li');
+  const olcardsElements = document.querySelectorAll('.table__list li');
   const firstElementObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -470,15 +492,24 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 
 
-  document.querySelector('.menu-toggle').addEventListener('click', () => {
-    document.querySelector('.menu-toggle').classList.toggle('closeMenu')
+  document.querySelector('.nav__menu-toggle').addEventListener('click', () => {
+    document.querySelector('.nav__menu-toggle').classList.toggle('closeMenu')
     document.querySelector('ul').classList.toggle('showMenu')
 })
 
 changeTemp.addEventListener("change", celToFhr)
-input.addEventListener("keyup", handleEnterKey)
 document.addEventListener("DOMContentLoaded", defaultWeather)
+document.querySelector('form').addEventListener('submit', function (event) {
+  event.preventDefault(); 
 
+});
+
+input.addEventListener('keydown', function (event) {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    getWeather(); 
+  }
+});
 document.querySelector('#pl-lang a').addEventListener('click', (e) => {
   e.preventDefault();
    currentLanguage = 'pl'
@@ -491,3 +522,5 @@ document.querySelector('#en-lang a').addEventListener('click', (e) => {
   changeLanguage('en')
   getWeather()
 })
+
+

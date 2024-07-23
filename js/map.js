@@ -143,3 +143,38 @@ mapElement.addEventListener('mouseleave', disableScrollWheelZoom);
 window.onload = function() {
     disableScrollWheelZoom()
 }
+function searchCity() {
+  var cityParam = document.getElementById('cityId').value.trim()
+  if (cityParam) {
+      var url = `https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(cityParam)}&format=json&limit=1`
+
+      fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data);
+              if (data.length > 0) {
+                  var lat = parseFloat(data[0].lat)
+                  var lon = parseFloat(data[0].lon)
+                
+                  if (window.currentCircle) {
+                      window.currentCircle.remove();
+                  }
+                  window.currentCircle = L.circle([lat, lon], {
+                      color: 'red',
+                      fillColor: 'red',
+                      fillOpacity: 0.3,
+                      radius: 1000
+                  }).addTo(map);
+               
+                  map.setView([lat, lon], 13)
+              } else {
+                  console.log('Miasto nie zostalo znalezione');
+              }
+          })
+          .catch(error => {
+              console.error('error:', error);
+          });
+  } else {
+      console.log('wpisz nazwe miasta');
+  }
+}
