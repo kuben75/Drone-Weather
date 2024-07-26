@@ -375,10 +375,9 @@ input.addEventListener('keydown', function (e) {
     getWeather()
   }
 })
-
-function handleLanguageChange(event) {
-  event.preventDefault();
-  const lang = event.target.dataset.id;
+function handleLanguageChange(e) {
+  e.preventDefault();
+  const lang = e.target.dataset.id;
     currentLanguage = lang;
     changeLanguage(lang);
     defaultWeather(lang)

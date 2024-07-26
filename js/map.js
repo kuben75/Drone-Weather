@@ -5,55 +5,64 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution:
     '&copy <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map)
+
 const mapElement = document.querySelector('#map')
 
 function enableScrollWheelZoom() {
-    map.scrollWheelZoom.enable()
-    mapElement.classList.add('map-scroll-active')
-    mapElement.classList.remove('map-scroll-inactive')
+  map.scrollWheelZoom.enable()
+  mapElement.classList.add('map-scroll-active')
+  mapElement.classList.remove('map-scroll-inactive')
 }
+
 function disableScrollWheelZoom() {
-    map.scrollWheelZoom.disable()
-    mapElement.classList.remove('map-scroll-active')
-    mapElement.classList.add('map-scroll-inactive')
+  map.scrollWheelZoom.disable()
+  mapElement.classList.remove('map-scroll-active')
+  mapElement.classList.add('map-scroll-inactive')
 }
+
 map.on('click', function() {
-    enableScrollWheelZoom()
-    mapElement.focus()
+  enableScrollWheelZoom()
+  mapElement.focus()
 })
+
 mapElement.addEventListener('mouseleave', disableScrollWheelZoom)
+
 window.onload = function() {
-    disableScrollWheelZoom()
+  disableScrollWheelZoom()
 }
-let zoneData =[]
+
+let zoneData = []
+
 const loadZoneData = () => {
   return fetch('http://localhost/nauka/json/zoneData.json')
     .then(response => response.json())
     .then(data => {
-      zoneData = data;
+      zoneData = data
+      const styleOne = {
+        color: "blue",
+        weight: 5,
+        opacity: 0.65
+      }
+      L.geoJSON(zoneData.myLines, {
+        style: styleOne
+      }).addTo(map)
+      addCircles(map)
     })
-    .catch(error => console.error('Error loading weather data:', error));
+    .catch(error => console.error('Błąd ładowania danych pogodowych:', error))
 }
-const styleOne = {
-  "color": "blue",
-  "weight": 5,
-  "opacity": 0.65
-}
-L.geoJSON(zoneData.myLines, {
-  style: styleOne
-}).addTo(map)
 
 function addCircles(map) {
-  circleData.forEach(function(data) {
-    var circle = L.circle([zoneData.circleData.lat, zoneData.circleData.lng], {
-      color: zoneData.circleData.color,
-      fillColor: zoneData.circleData.fillColor,
-      fillOpacity: zoneData.circleData.fillOpacity,
-      radius: zoneData.circleData.radius
+  zoneData.circleData.forEach(function(circleInfo) {
+    var circle = L.circle([circleInfo.lat, circleInfo.lng], {
+      color: circleInfo.color,
+      fillColor: circleInfo.fillColor,
+      fillOpacity: circleInfo.fillOpacity,
+      radius: circleInfo.radius
     }).addTo(map)
   })
 }
-addCircles(map)
+
+loadZoneData()
 
 function haversineDistance(lat1, lon1, lat2, lon2) {
   const R = 6371
@@ -72,7 +81,9 @@ function areCirclesColliding(circle1, circle2) {
   const distance = haversineDistance(circle1.lat, circle1.lng, circle2.lat, circle2.lng)
   return distance < (circle1.radius + circle2.radius)
 }
+
 const warningText = document.querySelector('.map__warning-text')
+
 function searchCity() {
   const cityParam = document.getElementById('cityId').value.trim()
   if (cityParam) {
@@ -81,16 +92,14 @@ function searchCity() {
     fetch(url)
       .then(response => response.json())
       .then(data => {
-        console.log(zoneData.circleData)
-        if (zoneData.circleData.length > 0) {
-          const lat = parseFloat(zoneData.circleData[0].lat)
-          const lon = parseFloat(zoneData.circleData[0].lon)
+        if (data.length > 0) {
+          const lat = parseFloat(data[0].lat)
+          const lon = parseFloat(data[0].lon)
           const newCircle = { lat: lat, lng: lon, radius: 1500 }
 
-          const collides = circleData.some(airport => areCirclesColliding(newCircle, airport))
+          const collides = zoneData.circleData.some(circle => areCirclesColliding(newCircle, circle))
           if (collides) {
             warningText.textContent = "Nie można rezerwować obszaru przy lotnisku"
-            
           } else {
             warningText.textContent = ""
             if (window.currentCircle) {
@@ -111,7 +120,7 @@ function searchCity() {
         }
       })
       .catch(error => {
-        console.error('error:', error)
+        console.error('Błąd:', error)
       })
   }
 }
