@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pogoda dla operatorów dronów</title>
+  <title>Drone weather</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
@@ -17,7 +17,7 @@
   <script src="https://kit.fontawesome.com/e6e67f4e19.js" crossorigin="anonymous"></script>
 </head>
 
-<body onload="checkCookie()">
+<body>
   <header class="header">
     <nav class="nav">
       <div class="nav__brand">
@@ -46,13 +46,13 @@
                     Wybierz język <span class="nav__language-arrow">▼</span>
                   </a>
                   <ul class="nav__language-dropdown">
-                    <li class="nav__language-dropdown-item" id="pl-lang">
-                      <a href="?lang=pl" onclick="changeLanguage('pl')">
+                    <li class="nav__language-dropdown-item">
+                      <a href="?lang=pl" data-id="pl">
                         <img src="img/pl_img.svg" alt="Polska Flaga"> PL
                       </a>
                     </li>
-                    <li class="nav__language-dropdown-item" id="en-lang">
-                      <a href="?lang=en" onclick="changeLanguage('en')">
+                    <li class="nav__language-dropdown-item">
+                      <a href="?lang=en" data-id="en">
                         <img src="img/en_img.svg" alt="Brytyjska Flaga"> EN
                       </a>
                     </li>
@@ -98,10 +98,6 @@
             <h2 class="main-content__local-time"></h2>
           </div>
         </div>
-        <script type="text/javascript">
-          let x = document.getElementById("myInput").value;
-          document.cookie = x;
-        </script>
         <div class="main-content__middle">
           <div class="main-content__middle-temperature">
             <p class="main-content__temperature"></p>
@@ -281,6 +277,11 @@
     <section class="search__container">
       <input type="text" id="cityId" class="search__container-input" placeholder="Wpisz nazwę miasta">
       <button  class="search__container-button" onclick="searchCity() ">Szukaj</button>
+      <button  class="search__container-button--remove" onclick="removeCircle() ">Usuń</button>
+    </section>
+    <section class="map__warning">
+      <section class="map__warning-text">
+      </section>
     </section>
     <section id="map" class="map">
     </section>

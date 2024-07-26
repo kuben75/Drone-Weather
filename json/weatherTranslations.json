@@ -1,0 +1,52 @@
+{
+    "translations": {
+      "pl": {
+        "contact": "Kontakt",
+        "tabbleTitle": "Sprawdź warunki pogodowe",
+        "inputPlaceholder": "Wpisz nazwę miasta...",
+        "weatherConditions": "bezpieczne warunki",
+        "weatherCheck": "Pogoda",
+        "cloudCoverage": "Zachmurzenie:",
+        "visibility": "Widoczność:",
+        "windSpeed": "Prędkość wiatru:",
+        "windDegre": "Kierunek wiatru:",
+        "windGusts": "Porywy wiatru:",
+        "humidity": "Wilgotność:",
+        "windDirection": "Kierunek wiatru:",
+        "uvIndex": "Indeks UV:",
+        "selectLanguage": "Wybierz język",
+        "weatherSafe": "bezpieczne warunki",
+        "weatherCaution": "umiarkowane warunki",
+        "weatherUnsafe": "niebezpieczne warunki",
+        "warning": "Wpisz poprawną nazwę miasta",
+        "Headquarters": "Siedziba główna",
+        "weatherSlide": "Pogoda",
+        "mapTrans": "Mapa",
+        "contSlide": "Kontakt"
+      },
+      "en": {
+        "contact": "Contact",
+        "tabbleTitle": "Check weather conditions",
+        "weatherCheck": "Weather:",
+        "inputPlaceholder": "Enter city name...",
+        "weatherConditions": "safe conditions",
+        "cloudCoverage": "Cloud coverage:",
+        "visibility": "Visibility:",
+        "windSpeed": "Wind speed:",
+        "windGusts": "Wind gusts:",
+        "windDegre": "Wind degree",
+        "windDirection": "Wind direction",
+        "humidity": "Humidity:",
+        "uvIndex": "UV Index:",
+        "selectLanguage": "Select language",
+        "weatherSafe": "safe conditions",
+        "weatherCaution": "moderate conditions",
+        "weatherUnsafe": "unsafe conditions",
+        "warning": "Enter correct name of city",
+        "Headquarters": "Headquarters",
+        "weatherSlide": "Weather",
+        "mapTrans": "Map",
+        "contSlide": "Contact"
+      }
+    }
+}

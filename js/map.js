@@ -1,135 +1,17 @@
-var map = L.map("map").setView([52.42036626625626, 16.911187840699196], 13);
+const map = L.map("map").setView([52.42036626625626, 16.911187840699196], 9)
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
   scrollWheelZoom: false,
   attribution:
-    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-}).addTo(map);
-
-var polygon = L.polygon([
-[52.43855287323876, 16.46984861170667],
-[52.55721271091128, 16.525261562788096],
-[52.40795508790423, 17.100595342704853],
-[52.33597153067481, 17.068999286815554]], {
-color: 'blue',
-fillColor: 'blue'
-}).addTo(map);
-
-var myLines = [ 
-    {
-      "type": "FeatureCollection",
-      "features": [
-        {
-          "type": "Feature",
-          "properties": {},
-          "geometry": {
-            "coordinates": [
-              [
-                [16.678932923774113, 51.22753986482428],
-                [16.58907771292229, 51.14554680927648],
-                [17.06352592861316, 51.01947655540516],
-                [17.135098739262105, 51.088526179774306],
-                [16.678932923774113, 51.22753986482428]
-              ]
-            ],
-            "type": "Polygon"
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {},
-          "geometry": {
-            "coordinates": [
-              [
-                [19.591828684348542, 51.8551799434575],
-                [19.113492323332025, 51.74832606267455],
-                [19.16459656971324, 51.6109392196191],
-                [19.64175307966005, 51.71884662058872],
-                [19.591828684348542, 51.8551799434575]
-              ]
-            ],
-            "type": "Polygon"
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {},
-          "geometry": {
-            "coordinates": [
-              [
-                [21.014144501581, 52.25154749105525],
-                [20.929598062851852, 52.26265931235915],
-                [20.761441130928546, 52.25752492243791],
-                [20.696936477488777, 52.204491421745615],
-                [20.762422977200345, 52.147994037935206],
-                [21.0305506215102, 52.01634453867152],
-                [21.127040561633606, 52.03864195082423],
-                [21.17791271072801, 52.130905258267575],
-                [21.014144501581, 52.25154749105525]
-              ]
-            ],
-            "type": "Polygon"
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {},
-          "geometry": {
-            "coordinates": [
-              [
-                [21.768856250528614, 50.24375903622163],
-                [21.763733641654625, 50.01678653400617],
-                [22.282467112245826, 50.00955133354873],
-                [22.279707743765698, 50.23687563087307],
-                [21.768856250528614, 50.24375903622163]
-              ]
-            ],
-            "type": "Polygon"
-          }
-        },
-        {
-          "type": "Feature",
-          "properties": {},
-          "geometry": {
-            "coordinates": [
-              [
-                [19.61555210835408, 49.99968926310504],
-                [19.722947087970226, 49.940744452079514],
-                [20.062295437598237, 50.02342918042555],
-                [20.05226797216588, 50.123635851221024],
-                [19.778880501735586, 50.17108723453981],
-                [19.606966737144035, 50.13705657851801],
-                [19.51881925358319, 50.070134929644695],
-                [19.554983697293665, 50.01311526714747],
-                [19.61555210835408, 49.99968926310504]
-              ]
-            ],
-            "type": "Polygon"
-          }
-        }
-      ]
-    }
-  ];
-
-var myStyle = {
-    "color": "blue",
-    "weight": 5,
-    "opacity": 0.65
-};
-
-L.geoJSON(myLines, {
-    style: myStyle
-}).addTo(map);
-
-var mapElement = document.querySelector('#map')
+    '&copy <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+}).addTo(map)
+const mapElement = document.querySelector('#map')
 
 function enableScrollWheelZoom() {
     map.scrollWheelZoom.enable()
     mapElement.classList.add('map-scroll-active')
     mapElement.classList.remove('map-scroll-inactive')
 }
-
-
 function disableScrollWheelZoom() {
     map.scrollWheelZoom.disable()
     mapElement.classList.remove('map-scroll-active')
@@ -139,42 +21,127 @@ map.on('click', function() {
     enableScrollWheelZoom()
     mapElement.focus()
 })
-mapElement.addEventListener('mouseleave', disableScrollWheelZoom);
+mapElement.addEventListener('mouseleave', disableScrollWheelZoom)
 window.onload = function() {
     disableScrollWheelZoom()
 }
-function searchCity() {
-  var cityParam = document.getElementById('cityId').value.trim()
-  if (cityParam) {
-      var url = `https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(cityParam)}&format=json&limit=1`
+let zoneData =[]
+const loadZoneData = () => {
+  return fetch('http://localhost/nauka/json/zoneData.json')
+    .then(response => response.json())
+    .then(data => {
+      zoneData = data;
+    })
+    .catch(error => console.error('Error loading weather data:', error));
+}
+const styleOne = {
+  "color": "blue",
+  "weight": 5,
+  "opacity": 0.65
+}
+L.geoJSON(zoneData.myLines, {
+  style: styleOne
+}).addTo(map)
 
-      fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            console.log(data);
-              if (data.length > 0) {
-                  var lat = parseFloat(data[0].lat)
-                  var lon = parseFloat(data[0].lon)
-                
-                  if (window.currentCircle) {
-                      window.currentCircle.remove();
-                  }
-                  window.currentCircle = L.circle([lat, lon], {
-                      color: 'red',
-                      fillColor: 'red',
-                      fillOpacity: 0.3,
-                      radius: 1000
-                  }).addTo(map);
-               
-                  map.setView([lat, lon], 13)
-              } else {
-                  console.log('Miasto nie zostalo znalezione');
-              }
-          })
-          .catch(error => {
-              console.error('error:', error);
-          });
-  } else {
-      console.log('wpisz nazwe miasta');
+function addCircles(map) {
+  circleData.forEach(function(data) {
+    var circle = L.circle([zoneData.circleData.lat, zoneData.circleData.lng], {
+      color: zoneData.circleData.color,
+      fillColor: zoneData.circleData.fillColor,
+      fillOpacity: zoneData.circleData.fillOpacity,
+      radius: zoneData.circleData.radius
+    }).addTo(map)
+  })
+}
+addCircles(map)
+
+function haversineDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371
+  const dLat = (lat2 - lat1) * Math.PI / 180
+  const dLon = (lon2 - lon1) * Math.PI / 180
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2)
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  const distance = R * c
+  return distance * 1000 
+}
+
+function areCirclesColliding(circle1, circle2) {
+  const distance = haversineDistance(circle1.lat, circle1.lng, circle2.lat, circle2.lng)
+  return distance < (circle1.radius + circle2.radius)
+}
+const warningText = document.querySelector('.map__warning-text')
+function searchCity() {
+  const cityParam = document.getElementById('cityId').value.trim()
+  if (cityParam) {
+    const url = `https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(cityParam)}&format=json&limit=1`
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        console.log(zoneData.circleData)
+        if (zoneData.circleData.length > 0) {
+          const lat = parseFloat(zoneData.circleData[0].lat)
+          const lon = parseFloat(zoneData.circleData[0].lon)
+          const newCircle = { lat: lat, lng: lon, radius: 1500 }
+
+          const collides = circleData.some(airport => areCirclesColliding(newCircle, airport))
+          if (collides) {
+            warningText.textContent = "Nie można rezerwować obszaru przy lotnisku"
+            
+          } else {
+            warningText.textContent = ""
+            if (window.currentCircle) {
+              window.currentCircle.remove()
+            }
+            window.currentCircle = L.circle([lat, lon], {
+              color: 'green',
+              fillColor: 'green',
+              fillOpacity: 0.3,
+              radius: 1500
+            }).addTo(map)
+
+            map.setView([lat, lon], 13)
+            localStorage.setItem('circleCoords', JSON.stringify({ lat: lat, lon: lon }))
+          }
+        } else {
+          console.log('Miasto nie zostało znalezione')
+        }
+      })
+      .catch(error => {
+        console.error('error:', error)
+      })
   }
 }
+
+function drawSavedCircle() {
+  const savedCoords = localStorage.getItem('circleCoords')
+  if (savedCoords) {
+    const { lat, lon } = JSON.parse(savedCoords)
+    window.currentCircle = L.circle([lat, lon], {
+      color: 'green',
+      fillColor: 'green',
+      fillOpacity: 0.3,
+      radius: 2000
+    }).addTo(map)
+    map.setView([lat, lon], 13)
+  }
+}
+
+drawSavedCircle()
+
+function removeCircle() {
+  if (window.currentCircle) {
+    window.currentCircle.remove()
+    localStorage.removeItem('circleCoords')
+  } else {
+    console.log("Nie ma okręgów do usunięcia")
+  }
+}
+
+const remButton = document.querySelector('.search__container-button--remove')
+remButton.addEventListener('click', removeCircle)
+
+document.getElementById('cityId').addEventListener('change', searchCity)

@@ -664,24 +664,34 @@ body {
     flex-direction: row;
     position: absolute;
     left: 10%;
+    padding: 30px 0;
 
     &-input {
-      width: 225px;
+      width: 250px;
       height: 50px;
       z-index: 9998;
       color: black;
       border-radius: 5px;
-      pointer-events: all !important;
+      border: 2px solid #f53eb2cf;
     }
 
-    &-button {
+    &-button, &-button--remove {
       z-index: 9998;
-      padding: 20px;
+      padding: 10px 50px;
       background-color: $backgroundinput-color;
-      border: 1px solid #f53eb2cf;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.659);
+      border: 2px solid #f53eb2cf;
       color: black;
       border-radius: 5px;
+    }
+  }
+  .map__warning {
+    display: flex;
+    justify-content: center;
+    &-text {
+      font-size: 22px;
+      color: red;
+      visibility: visible;
+      font-weight: 600;
     }
   }
 
@@ -689,7 +699,7 @@ body {
     pointer-events: all;
   }
   .map-scroll-inactive {
-    pointer-events: none;
+    pointer-events: all;
   }
 }
 .contact {
@@ -766,6 +776,24 @@ body {
       width: 90%;
       font-size: 15px;
     }
+    .search__container {
+      left: 15%;
+      &-input {
+        width: 125px;
+        height: 40px;
+      }
+  
+      &-button, &-button--remove {
+        padding: 8px 20px;
+      }
+    }
+    .weather-data {
+      flex-wrap: wrap;
+      &__element {
+        margin: 10px 0;
+        width: 30%;
+      }
+    }
   }
   .main-info__input-container {
     &-text {
@@ -776,15 +804,6 @@ body {
       margin: 10px;
       width: 70px;
       max-width: 100%;
-    }
-  }
-  .weather-data {
-    display: flex;
-    flex-wrap: wrap;
-
-    &__element {
-      margin: 10px 0;
-      width: 30%;
     }
   }
   .contact {
