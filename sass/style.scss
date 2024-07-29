@@ -664,7 +664,7 @@ body {
     flex-direction: row;
     position: absolute;
     left: 10%;
-    padding: 30px 0;
+    padding: 50px 0;
 
     &-input {
       width: 250px;
@@ -687,6 +687,8 @@ body {
   .map__warning {
     display: flex;
     justify-content: center;
+    height: 50px;
+    width: auto;
     &-text {
       font-size: 22px;
       color: red;
@@ -783,7 +785,7 @@ body {
         height: 40px;
       }
   
-      &-button, &-button--remove {
+      &-button {
         padding: 8px 20px;
       }
     }
@@ -792,6 +794,11 @@ body {
       &__element {
         margin: 10px 0;
         width: 30%;
+      }
+    }
+    .map__warning {
+      &-text {
+        font-size: 14px;
       }
     }
   }

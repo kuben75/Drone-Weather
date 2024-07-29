@@ -30,20 +30,20 @@
         <ul class="nav__menu-list">
 
           <li class="nav__menu-item">
-            <a href="#weather" class="nav__menu-link" id="#weathSlide">Pogoda</a>
+            <a href="#weather" class="nav__menu-link translate" data-translate="weather" id="#weathSlide"></a>
           </li>
           <li class="nav__menu-item">
-            <a href="#mapslide" class="nav__menu-link" id="#mapSlide">Mapa</a>
+            <a href="#mapslide" class="nav__menu-link translate" data-translate="map" id="#mapSlide"></a>
           </li>
           <li class="nav__menu-item">
-            <a href="#contact" class="nav__menu-link" id="#contactSlide">Kontakt</a>
+            <a href="#contact" class="nav__menu-link translate" data-translate="contact" id="#contactSlide"></a>
           </li>
           <li class="nav__menu-item">
             <div class="nav__language">
               <ul class="nav__language-list">
                 <li class="nav__language-item">
-                  <a href="#" class="nav__language-selector">
-                    Wybierz język <span class="nav__language-arrow">▼</span>
+                  <a href="#" class="nav__language-selector translate" data-translate="selectLanguage">
+                    <span class="nav__language-arrow">▼</span>
                   </a>
                   <ul class="nav__language-dropdown">
                     <li class="nav__language-dropdown-item">
@@ -87,9 +87,8 @@
           <div class="main-content__main-info">
             <div class="main-info__input-container">
               <form name="myForm" method="post">
-              <input class="main-info__input-container-text" id="myInput" type="text"
-                placeholder="Wpisz nazwę miasta..." aria-label="Nazwa miasta" />
-                 
+              <input class="main-info__input-container-text translate" id="myInput" type="text"
+                placeholder="Wpisz nazwę miasta..." data-placeholder="inputPlaceholder" aria-label="Nazwa miasta" />
               </form>
               <p class="main-info__input-container-warning" aria-live="polite"></p>
             </div>
@@ -107,9 +106,9 @@
 
         <div class="main-content__bottom">
           <div class="main-content__headings">
-            <p class="headings__weather">Pogoda:</p>
-            <p class="headings__cloud-cover">Zachmurzenie:</p>
-            <p class="headings__visibility">Widoczność:</p>
+            <p class="headings__weather translate" data-translate="weatherCheck"></p>
+            <p class="headings__cloud-cover translate" data-translate="cloudCoverage"></p>
+            <p class="headings__visibility translate" data-translate="visibility"></p>
           </div>
           <div class="main-content__weather-info">
             <p class="weather-info__weather"></p>
@@ -117,9 +116,9 @@
             <p class="weather-info__visibility"></p>
           </div>
           <div class="main-content__headings">
-            <p class="headings__wind-speed">Prędkość wiatru:</p>
-            <p class="headings__wind-direction">Kierunek wiatru:</p>
-            <p class="headings__wind-degree">Kierunek wiatru:</p>
+            <p class="headings__wind-speed translate" data-translate="windSpeed"></p>
+            <p class="headings__wind-direction translate" data-translate="windDirection"></p>
+            <p class="headings__wind-degree translate" data-translate="windDegre"></p>
           </div>
           <div class="main-content__weather-info">
             <p class="weather-info__wind"></p>
@@ -127,9 +126,9 @@
             <p class="weather-info__wind-degree"></p>
           </div>
           <div class="main-content__headings">
-            <p class="headings__wind-gusts">Porywy wiatru:</p>
-            <p class="headings__humidity">Wilgotność:</p>
-            <p class="headings__uv-index">Indeks UV:</p>
+            <p class="headings__wind-gusts translate" data-translate="windGusts"></p>
+            <p class="headings__humidity translate" data-translate="humidity"></p>
+            <p class="headings__uv-index translate" data-translate="uvIndex"></p>
           </div>
           <div class="main-content__weather-info">
             <p class="weather-info__gust"></p>
@@ -141,47 +140,47 @@
 
       <div class="main-content__table">
         <div class="table__title">
-          <h2 class="table__title-text">Sprawdź warunki pogody:</h2>
+          <h2 class="table__title-text translate" data-translate="tabbleTitle"></h2>
           <ol class="table__list">
             <li class="table__list-item" style="--cardColor:#f2f2f2">
               <div class="table__list-content">
-                <div class="table__list-heading-one">Pogoda:</div>
+                <div class="table__list-heading-one translate" data-translate="weather"></div>
                 <span class="table__weather-condition"></span>
               </div>
             </li>
             <li class="table__list-item" style="--cardColor:#f2f2f2">
               <div class="table__list-content">
-                <div class="table__list-heading-two">Zachmurzenie:</div>
+                <div class="table__list-heading-two translate" data-translate="cloudCoverage"></div>
                 <span class="table__cloud-cover"></span>
               </div>
             </li>
             <li class="table__list-item" style="--cardColor:#f2f2f2">
               <div class="table__list-content">
-                <div class="table__list-heading-three">Widoczność:</div>
+                <div class="table__list-heading-three translate" data-translate="visibility"></div>
                 <span class="table__visibility"></span>
               </div>
             </li>
             <li class="table__list-item" style="--cardColor:#f2f2f2">
               <div class="table__list-content">
-                <div class="table__list-heading-four">Prędkość wiatru:</div>
+                <div class="table__list-heading-four translate" data-translate="windSpeed"></div>
                 <span class="table__wind-speed"></span>
               </div>
             </li>
             <li class="table__list-item" style="--cardColor:#f2f2f2">
               <div class="table__list-content">
-                <div class="table__list-heading-five">Poryw wiatru:</div>
+                <div class="table__list-heading-five translate" data-translate="windGusts"></div>
                 <span class="table__wind-gusts"></span>
               </div>
             </li>
             <li class="table__list-item" style="--cardColor:#f2f2f2">
               <div class="table__list-content">
-                <div class="table__list-heading-six">Wilgotność:</div>
+                <div class="table__list-heading-six translate" data-translate="humidity"></div>
                 <span class="table__humidity"></span>
               </div>
             </li>
             <li class="table__list-item" style="--cardColor:#f2f2f2">
               <div class="table__list-content">
-                <div class="table__list-heading-sev">Indeks UV:</div>
+                <div class="table__list-heading-sev translate" data-translate="uvIndex"></div>
                 <span class="table__uv-index"></span>
               </div>
             </li>
@@ -275,9 +274,9 @@
       </div>
     </section>
     <section class="search__container">
-      <input type="text" id="cityId" class="search__container-input" placeholder="Wpisz nazwę miasta">
-      <button  class="search__container-button" onclick="searchCity() ">Szukaj</button>
-      <button  class="search__container-button--remove" onclick="removeCircle() ">Usuń</button>
+      <input type="text" id="cityId" class="search__container-input translate" data-placeholder="inputPlaceholder" placeholder="Wpisz nazwę miasta...">
+      <button class="search__container-button translate" data-translate="search" data-action="search" ></button>
+      <button class="search__container-button translate" data-translate="remove" data-action="remove"></button>
     </section>
     <section class="map__warning">
       <section class="map__warning-text">
@@ -287,12 +286,12 @@
     </section>
   </main>
     <footer id="contact" class="contact">
-      <h2 class="contact__title">kontakt</h2>
+      <h2 class="contact__title translate" data-translate="contact"></h2>
       <div class="contact__underline"></div>
 
       <div class="contact__container">
         <div class="contact__container-head">
-          <h3 class="contact__container-title">Główna siedziba</h3>
+          <h3 class="contact__container-title translate" data-translate="Headquarters"></h3>
           <p class="contact__container-address">ul. Ładna 43</p>
           <p class="contact__container-address">64-510 Wronki</p>
           <p class="contact__container-phone">+48 000 000 000</p>

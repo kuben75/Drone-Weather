@@ -1,9 +1,12 @@
 {
+  
     "translations": {
       "pl": {
+        "weather": "Pogoda",
+        "map": "Mapa",
         "contact": "Kontakt",
         "tabbleTitle": "Sprawdź warunki pogodowe",
-        "inputPlaceholder": "Wpisz nazwę miasta...",
+        "inputPlaceholder": "Wpisz nazwę miasta...", 
         "weatherConditions": "bezpieczne warunki",
         "weatherCheck": "Pogoda",
         "cloudCoverage": "Zachmurzenie:",
@@ -20,11 +23,12 @@
         "weatherUnsafe": "niebezpieczne warunki",
         "warning": "Wpisz poprawną nazwę miasta",
         "Headquarters": "Siedziba główna",
-        "weatherSlide": "Pogoda",
-        "mapTrans": "Mapa",
-        "contSlide": "Kontakt"
+        "search": "Szukaj",
+        "remove": "Usuń"
       },
       "en": {
+        "weather": "Weather",
+        "map": "Map",
         "contact": "Contact",
         "tabbleTitle": "Check weather conditions",
         "weatherCheck": "Weather:",
@@ -44,9 +48,8 @@
         "weatherUnsafe": "unsafe conditions",
         "warning": "Enter correct name of city",
         "Headquarters": "Headquarters",
-        "weatherSlide": "Weather",
-        "mapTrans": "Map",
-        "contSlide": "Contact"
+        "search": "Search",
+        "remove": "Remove"
       }
     }
 }
