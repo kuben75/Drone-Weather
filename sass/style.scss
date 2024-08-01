@@ -13,12 +13,12 @@ $orange: #fc9b1b;
 $lightGrey: #999;
 $grey: #444;
 $darkGrey: #333;
-
+$font: "Poppins", sans-serif; 
 html {
   scroll-behavior: smooth;
 }
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: $font;
   background-color: $backgroundinput-color;
   color: $primary-color;
   margin: 0;
@@ -667,6 +667,7 @@ body {
     padding: 50px 0;
 
     &-input {
+      font-family: $font;
       width: 250px;
       height: 50px;
       z-index: 9998;
@@ -676,12 +677,19 @@ body {
     }
 
     &-button, &-button--remove {
+      font-family: $font; 
       z-index: 9998;
       padding: 10px 50px;
       background-color: $backgroundinput-color;
       border: 2px solid #f53eb2cf;
+      font-weight: 500;
       color: black;
       border-radius: 5px;
+      &:hover {
+        background-color: #f3efef;
+        cursor: pointer;
+        
+      }
     }
   }
   .map__warning {
