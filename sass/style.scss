@@ -13,9 +13,16 @@ $orange: #fc9b1b;
 $lightGrey: #999;
 $grey: #444;
 $darkGrey: #333;
-$font: "Poppins", sans-serif; 
+$black: #000;
+$pink: rgb(117, 109, 230);
+$dark-pink: rgb(89, 81, 201);
+$font: "Poppins", sans-serif;
 html {
   scroll-behavior: smooth;
+}
+.bodyoverflow 
+{
+  overflow: hidden;
 }
 body {
   font-family: $font;
@@ -106,7 +113,7 @@ body {
       padding: 10px 20px;
       display: block;
       cursor: pointer;
-      border: 3px solid #f53eb2cf;
+      border: 3px solid $pink;
       border-radius: 4px;
       font-weight: 400;
       font-size: 15px;
@@ -137,7 +144,85 @@ body {
           text-decoration: none;
           padding: 15px 0;
           list-style: none;
-          border: 1px solid #f53eb2cf;
+          border: 1px solid $pink;
+          font-size: 18px;
+
+          img {
+            margin-right: 8px;
+            width: 20px;
+            height: 20px;
+          }
+
+          &:hover {
+            background-color: #f1f1f1;
+          }
+        }
+      }
+    }
+  }
+  &__account {
+    padding: 5px;
+
+    &-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      &:hover .nav__account-dropdown {
+        display: block;
+      }
+    }
+
+    &-item {
+      position: relative;
+      list-style: none;
+      width: 100%;
+    }
+
+    &-selector {
+      color: $darkGrey;
+      text-decoration: none;
+      padding: 10px 20px;
+      display: block;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: 400;
+      font-size: 15px;
+      img {
+        width:50px;
+        height: 50px;
+      }
+    }
+
+    &-arrow {
+      margin-left: 15px;
+      font-size: 20px;
+    }
+
+    &-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: $backgroundinput-color;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      z-index: 1;
+      width: 200px;
+      list-style: none;
+      padding: 0;
+
+      &-item {
+        z-index: 1;
+
+        a {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: $black;
+          text-decoration: none;
+          padding: 15px 0;
+          list-style: none;
+          border: 1px solid $pink;
           font-size: 18px;
 
           img {
@@ -350,7 +435,7 @@ body {
     width: 100%;
     height: 100%;
     cursor: pointer;
-    background-color: rgba(245, 62, 178, 0.2666666667);
+    background-color: rgb(160, 157, 209);
     border-radius: 25px;
 
     .toright {
@@ -363,7 +448,7 @@ body {
     left: 0;
     width: 60px;
     height: 100%;
-    background-color: #f53eb2cf;
+    background-color: $pink;
     border-radius: 20px;
     transition: transform 0.3s ease;
   }
@@ -374,7 +459,7 @@ body {
     transform: translateY(-50%);
     width: 50%;
     text-align: center;
-    color: $text-color;
+    color: #e9e3e3;
     font-weight: bold;
 
     &:first-of-type {
@@ -448,11 +533,6 @@ body {
       margin-right: 10px;
       width: 200px;
       max-width: 100%;
-    }
-    &-warning {
-      color: $accent-color;
-      font-size: 12px;
-      margin: 0;
     }
   }
   &__middle {
@@ -616,7 +696,7 @@ body {
     margin: 0 auto;
     &__element {
       width: 10%;
-      background-color: #f53eb244;
+      background-color: $dark-pink;
       height: auto;
       border-radius: 10%;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.513);
@@ -625,7 +705,7 @@ body {
         box-shadow 0.5s;
       cursor: pointer;
       &:hover {
-        background-color: #f53eb2cf;
+        background-color: $pink;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.659);
       }
     }
@@ -658,13 +738,48 @@ body {
     width: 100%;
     height: 50vh;
   }
+  .notification {
+    position: fixed;
+    top: 16%;
+    left: 50%;
+    padding: 25px;
+    width:100%;
+    max-width: 500px;
+    max-height: 150px;
+    z-index: 9998;
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+    justify-content: space-around;
+    gap: 10px;
+    align-items: center;
+    background-color: #04AA6D;
+    transform: translateX(-50%);
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    border-radius: 5px;
+  &__content {
+    font-size: 18px;
+    color: $backgroundinput-color;
+  }
+    &__button {
+      background: none;
+      border: none;
+      font-size: 20px;
+      color: $backgroundinput-color;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+  i {
+    color: $backgroundinput-color;
+  }
+}
   .search__container {
     display: flex;
     justify-content: flex-start;
     flex-direction: row;
     position: absolute;
     left: 10%;
-    padding: 50px 0;
+    padding: 0;
 
     &-input {
       font-family: $font;
@@ -673,7 +788,7 @@ body {
       z-index: 9998;
       color: black;
       border-radius: 5px;
-      border: 2px solid #f53eb2cf;
+      border: 2px solid $pink;
     }
 
     &-button, &-button--remove {
@@ -681,7 +796,7 @@ body {
       z-index: 9998;
       padding: 10px 50px;
       background-color: $backgroundinput-color;
-      border: 2px solid #f53eb2cf;
+      border: 2px solid $pink;
       font-weight: 500;
       color: black;
       border-radius: 5px;
@@ -697,6 +812,7 @@ body {
     justify-content: center;
     height: 50px;
     width: auto;
+    opacity: 0;
     &-text {
       font-size: 22px;
       color: red;
@@ -735,7 +851,7 @@ body {
       font-size: 22px;
     }
     &-social-icon:hover {
-      color: #f53eb2cf;
+      color: $pink;
       cursor: pointer;
     }
     &-title {
@@ -764,6 +880,259 @@ body {
     z-index: -5;
   }
 }
+
+.modal, .modal__error {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 9999;
+  &__error-text {
+    font-size: 16px;
+    color: red;
+  }
+  &--active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__window {
+    background-color: #fff;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    animation: slide-down 0.3s ease-out;
+  }
+
+  &__header {
+    padding: 16px;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #d0d0d0;
+  }
+
+  &__title {
+    margin: 0;
+    font-size: 24px;
+    color: #000;
+  }
+
+  &__close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #000;
+    cursor: pointer;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #333;
+    }
+
+    i {
+      pointer-events: none;
+    }
+  }
+
+  &__content {
+    padding: 16px;
+    &-text {
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__form-group {
+    display: flex;
+    flex-direction: column;
+
+    &--actions {
+      margin-top: 16px;
+      text-align: right;
+    }
+  }
+
+  &__label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: #333;
+  }
+  &__footer {
+    padding: 32px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  &__button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    a {
+      text-decoration: none;
+      color: $backgroundinput-color;
+      font-weight: bold;
+    }
+    &--register{
+      background-color: rgb(69, 59, 211);
+    }
+    &--login {
+      background-color: rgb(201, 27, 27);
+    }
+  }
+
+  &__input {
+    padding: 8px;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #000;
+
+    &:focus {
+      outline: none;
+      border-color: #000;
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  &__submit-btn {
+    padding: 8px 16px;
+    background-color: rgba(89, 81, 201, 1);
+    font-weight: bold;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: rgb(69, 59, 211);
+    }
+  }
+}
+/* Map control panel*/
+.info {
+  background: white;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  line-height: 1.5;
+  font-family: $font;
+  font-size: 16px;
+
+  h4 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    color: #333;
+  }
+
+  b {
+    font-weight: bold;
+    color: #2c3e50;
+    font-size: 16px;
+  }
+
+  .empty {
+    font-style: $font;
+    font-size: 14px;
+    color: #888;
+  }
+}
+/* Map legend */
+.legend {
+  padding: 20px;
+  font: 14px $font;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  line-height: 24px;
+  color: #555;
+}
+.legend h4 {
+  text-align: center;
+  font-size: 16px;
+  margin: 8px;
+  color: $black;
+}
+
+.legend span {
+  padding: 4px 0;
+  position: relative;
+  bottom: 3px;
+  color: #555555;
+}
+
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin: 0 8px 0 0;
+}
+
+.legend i.icon {
+  background-size: 18px;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+@keyframes modal-appear {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 
 @media only screen and (max-width: 600px) {
   .main-content {
@@ -802,11 +1171,6 @@ body {
       &__element {
         margin: 10px 0;
         width: 30%;
-      }
-    }
-    .map__warning {
-      &-text {
-        font-size: 14px;
       }
     }
   }

@@ -1,22 +1,20 @@
-
+"use sctrict"
 import { searchCity } from "./api.js"
-import { removeCircle } from "./circleConfig.js"
+import { mapElement } from "./circleConfig.js"
 export const removeAccents = (str) => 
-    str.replace(
-        /[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/g,
-        (char) => "acelnoszzACELNOSZZ" ["ąćęłńóśźżĄĆĘŁŃÓŚŹŻ".indexOf(char)])
-
+    str.replace( /[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]/g,
+         (char) => "acelnoszzACELNOSZZ" ["ąćęłńóśźżĄĆĘŁŃÓŚŹŻ".indexOf(char)])
   export function setCookie(cname, cvalue, exdays) {
-        const d = new Date();
+        const d = new Date()
         d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000)
         const expires = "expires=" + d.toUTCString()
-        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/"
+        document.cookie = cname + "=" + cvalue + "" + expires + "path=/"
         
     }
  export function getCookie(cname) {
         const name = cname + "="
         const decodedCookie = decodeURIComponent(document.cookie)
-        const ca = decodedCookie.split(";")
+        const ca = decodedCookie.split("")
         for (let i = 0; i < ca.length; i++) {
             let c = ca[i].trim()
             if (c.indexOf(name) === 0) {
@@ -66,23 +64,6 @@ export const removeAccents = (str) =>
     
     firstElementObserver.observe(olcardsElements[0])
 }
-function haversineDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371
-    const dLat = (lat2 - lat1) * Math.PI / 180
-    const dLon = (lon2 - lon1) * Math.PI / 180
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2)
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-    const distance = R * c
-    return distance * 1000
-}
-
-export function areCirclesColliding(circle1, circle2) {
-    const distance = haversineDistance(circle1.lat, circle1.lng, circle2.lat, circle2.lng)
-    return distance < (circle1.radius + circle2.radius)
-}
 
 export function buttonSettings () {
     const buttons = document.querySelectorAll('.search__container-button')
@@ -99,9 +80,43 @@ export function buttonSettings () {
         element.addEventListener('click', () => {
             if (buttonSet === "search")  {
                 searchCity()
-            } else if (buttonSet === "remove") {
-                removeCircle()
             }
         })
     })
 }
+
+const toggleVisibility = (isVisible) => {
+    const notificationBox = document.querySelector('.notification')
+    notificationBox.style.display = isVisible ? 'flex' : 'none'
+    notificationBox.style.visibility = isVisible ? 'visible' : 'hidden'
+    notificationBox.style.opacity = isVisible ? '1' : '0'
+}
+
+export function showNotification (e) {
+   const closeButton = document.querySelector('.notification__button')
+    closeButton.addEventListener('click', e => {
+        if (e.target === closeButton) {
+            toggleVisibility(false)
+            console.log("clicked")
+        }
+    })
+        toggleVisibility(true)
+        setTimeout(function () {
+            toggleVisibility(false)
+        }, 5000)
+
+}
+
+export const displayModal = (show) => {
+    const bodyElement = document.body
+    const modalWindow = document.querySelector(".modal")
+
+    if (show) {
+        bodyElement.classList.add("bodyoverflow")
+        modalWindow.classList.add("modal--active")
+    } else {
+        bodyElement.classList.remove("bodyoverflow")
+        modalWindow.classList.remove("modal--active")
+    }
+}
+

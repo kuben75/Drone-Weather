@@ -1,3 +1,9 @@
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+require 'php/init.php';
+?>
 <!doctype html>
 <html lang="pl">
 
@@ -15,7 +21,9 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="https://kit.fontawesome.com/e6e67f4e19.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
+
 <body>
   <header class="header">
     <nav class="nav">
@@ -60,6 +68,48 @@
               </ul>
             </div>
           </li>
+          <?php if ($isLoggedIn): ?>
+          <li class="nav__menu-item">
+            <div class="nav__account">
+              <ul class="nav__account-list">
+                <li class="nav__account-item">
+                  <a href="#" class="nav__account-selector">
+                    <img src="./img/user_default.svg" alt="Avatar" class="nav__account-avatar">
+                    <span class="nav__account-arrow">▼</span>
+                  </a>
+                  <ul class="nav__account-dropdown">
+                    <li class="nav__account-dropdown-item">
+                      <a href="dashboard.php">Mój profil</a>
+                    </li>
+                    <li class="nav__account-dropdown-item">
+                      <a href="php/spa/logout.php">Wyloguj się</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <?php else: ?>
+          <li class="nav__menu-item">
+            <div class="nav__account">
+              <ul class="nav__account-list">
+                <li class="nav__account-item">
+                  <a href="#" class="nav__account-selector">Moje konto
+                    <span class="nav__account-arrow">▼</span>
+                  </a>
+                  <ul class="nav__account-dropdown">
+                    <li class="nav__account-dropdown-item">
+                      <a href="registration.php">Zarejestruj się</a>
+                    </li>
+                    <li class="nav__account-dropdown-item">
+                      <a href="userlogin.php">Zaloguj się</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <?php endif; ?>
         </ul>
       </div>
     </nav>
@@ -85,9 +135,9 @@
           </div>
           <div class="main-content__main-info">
             <div class="main-info__input-container">
-              <form name="myForm" method="post">
-              <input class="main-info__input-container-text translate" id="myInput" type="text"
-                placeholder="Wpisz nazwę miasta..." data-placeholder="inputPlaceholder" aria-label="Nazwa miasta" />
+              <form name="myForm" method="post" autocomplete="off">
+                <input class="main-info__input-container-text translate" id="myInput" type="text"
+                  placeholder="Wpisz nazwę miasta..." data-placeholder="inputPlaceholder" aria-label="Nazwa miasta" />
               </form>
               <p class="main-info__input-container-warning" aria-live="polite"></p>
             </div>
@@ -273,41 +323,95 @@
       </div>
     </section>
     <section class="search__container">
-      <input type="text" id="cityId" class="search__container-input translate" data-placeholder="inputPlaceholder" placeholder="Wpisz nazwę miasta...">
-      <button class="search__container-button translate" data-translate="search" data-action="search" ></button>
-      <button class="search__container-button translate" data-translate="remove" data-action="remove"></button>
+      <input type="text" id="cityId" class="search__container-input translate" data-placeholder="inputPlaceholder"
+        placeholder="Wpisz nazwę miasta...">
+      <button class="search__container-button translate" data-translate="search" data-action="search"></button>
     </section>
-    <section class="map__warning">
-      <section class="map__warning-text">
+      <section class="notification">
+          <span class="notification__content"><strong>Sukces! </strong>udało ci się zarejestrować lot dronem!</span>
+          <button class="notification__button" aria-label="Zamknij okno">
+                <i class="fa-solid fa-x" aria-hidden="true"></i>
+                  </button>
       </section>
-    </section>
-    <section id="map" class="map">
+      <?php if ($isLoggedIn): ?>
+      <section class="modal">
+          <div class="modal__window">
+              <div class="modal__header">
+                  <h2 class="modal__title">Zarezerwuj lot dronem</h2>
+                  <button class="modal__close-btn" aria-label="Zamknij okno">
+                      <i class="fa-solid fa-x" aria-hidden="true"></i>
+                  </button>
+              </div>
+              <div class="modal__content">
+                  <form action="" method="POST" class="modal__form" autocomplete="off">
+                      <div class="modal__error-text"> <?php
+                          if (isset($_SESSION['message'])) {
+                              echo $_SESSION['message'];
+                              unset($_SESSION['message']);
+                          }
+                          ?>
+                      </div>
+                      <div class="modal__form-group">
+                          <label for="dronename" class="modal__label">Nazwa drona</label>
+                          <input type="text" name="dronename" id="dronename" class="modal__input" placeholder="Wpisz nazwę drona" required>
+                      </div>
+                      <div class="modal__form-group">
+                          <label for="meeting" class="modal__label">Wybierz datę i godzinę rezerwacji:</label>
+                          <input type="datetime-local" id="reserve" name="reserve" class="modal__input">
+                      </div>
+                      <div class="modal__form-group modal__form-group--actions">
+                          <button type="submit" class="modal__submit-btn">Zarejestruj lot</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </section>
+      <?php else : ?>
+      <section class="modal__error">
+          <div class="modal__window">
+              <div class="modal__header">
+                  <h2 class="modal__title">Ostrzeżenie</h2>
+                  <button class="modal__close-btn" aria-label="Zamknij okno">
+                      <i class="fa-solid fa-x" aria-hidden="true"></i>
+                  </button>
+              </div>
+              <div class="modal__content">
+                  <span class="modal__content-text">Musisz być zalogowany aby skorzystać z usługi rezerwacji </span>
+              </div>
+              <div class="modal__footer">
+            <button class="modal__button modal__button--register"><a href="registration.php">Załóż konto</a></button>
+             <button class="modal__button modal__button--login"><a href="userlogin.php">Zaloguj się</a></button>
+            </div>
+
+          </div>
+      </section>
+      <?php endif ; ?>
+      <section id="map" class="map">
     </section>
   </main>
-    <footer id="contact" class="contact">
-      <h2 class="contact__title translate" data-translate="contact"></h2>
-      <div class="contact__underline"></div>
+  <footer id="contact" class="contact">
+    <h2 class="contact__title translate" data-translate="contact"></h2>
+    <div class="contact__underline"></div>
 
-      <div class="contact__container">
-        <div class="contact__container-head">
-          <h3 class="contact__container-title translate" data-translate="Headquarters"></h3>
-          <p class="contact__container-address">ul. Ładna 43</p>
-          <p class="contact__container-address">64-510 Wronki</p>
-          <p class="contact__container-phone">+48 000 000 000</p>
-          <p class="contact__container-email">droneweather@gmail.com</p>
-        </div>
-        <div class="contact__container-social-media">
-          <h3 class="contact__container-social-title">Social Media</h3>
-          <i class="contact__container-social-icon fa-brands fa-facebook"></i>
-          <i class="contact__container-social-icon fa-brands fa-instagram"></i>
-          <i class="contact__container-social-icon fa-brands fa-twitter"></i>
-          <i class="contact__container-social-icon fa-brands fa-tiktok"></i>
-        </div>
+    <div class="contact__container">
+      <div class="contact__container-head">
+        <h3 class="contact__container-title translate" data-translate="Headquarters"></h3>
+        <p class="contact__container-address">ul. Ładna 43</p>
+        <p class="contact__container-address">64-510 Wronki</p>
+        <p class="contact__container-phone">+48 000 000 000</p>
+        <p class="contact__container-email">droneweather@gmail.com</p>
       </div>
-      <div class="contact__container-shadow"></div>
-    </footer>
-    <script type="module" src="js/main.js"></script>
-  <script type="module" src="js/map.js"></script>
+      <div class="contact__container-social-media">
+        <h3 class="contact__container-social-title">Social Media</h3>
+        <i class="contact__container-social-icon fa-brands fa-facebook"></i>
+        <i class="contact__container-social-icon fa-brands fa-instagram"></i>
+        <i class="contact__container-social-icon fa-brands fa-twitter"></i>
+        <i class="contact__container-social-icon fa-brands fa-tiktok"></i>
+      </div>
+    </div>
+    <div class="contact__container-shadow"></div>
+  </footer>
+  <script type="module" src="js/main.js"></script>
 </body>
 
 </html>

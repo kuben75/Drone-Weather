@@ -39,28 +39,38 @@ export const updateNextWeather = (data) => {
 export const updateWeatherInfo = (data, lang = currentLanguage) => {
     const cityName = document.querySelector(".main-content__top-city-name")
     cityName.textContent = data.location.name
+
     const weather = document.querySelector(".weather-info__weather")
     weather.textContent = data.current.condition.text
+
     const temperature = document.querySelector(".main-content__temperature")
     temperature.textContent = `${Math.floor(data.current.temp_c)} ℃`
     temperature.fahrenheit = (data.current.temp_c * 1.8 + 32).toFixed(0)
     temperature.celsious = `${Math.floor(data.current.temp_c)} ℃`
+
     const humidity = document.querySelector(".weather-info__humidity")
     humidity.textContent = `${data.current.humidity}%`
+
     const localTime = document.querySelector(".main-content__local-time")
     localTime.textContent = data.location.localtime
+
     const wind = document.querySelector(".weather-info__wind")
     wind.textContent = `${Math.floor(data.current.wind_kph)} km/h`
+
     const cloud = document.querySelector(".weather-info__cloud")
     const gust = document.querySelector(".weather-info__gust")
     cloud.textContent = `${data.current.cloud}%`
+
     gust.textContent = `${Math.floor(data.current.gust_kph)} km/h`
     const windDir = document.querySelector(".weather-info__wind-direction")
     windDir.textContent = data.current.wind_dir
+
     const windDegree = document.querySelector(".weather-info__wind-degree")
     windDegree.textContent = `${data.current.wind_degree} °`
+
     const uv = document.querySelector(".weather-info__uv")
     uv.textContent = data.current.uv
+    
     const vis = document.querySelector(".weather-info__visibility")
     vis.textContent = `${data.current.vis_km} km`
     const code = data.current.condition.code

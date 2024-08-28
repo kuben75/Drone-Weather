@@ -12,7 +12,7 @@ const fetchDefaultWeather = (city) => {
         .then(updateWeatherInfo)
         .then(changeLanguagev2)
         .catch(err => console.error(err));
-};
+}
 
 const defaultWeather = () => {
     const defaultCity = getCookie("city") || "Warszawa";
@@ -48,9 +48,12 @@ function handleLanguageChange(e) {
 }
 function setupListeners () {
     document.querySelector('form').addEventListener('submit', (e) => e.preventDefault())
+
     input.addEventListener('keydown', onPressEnter)
+
     document.querySelector("#temp-toggle").addEventListener("change", celToFhr)
-    document.querySelectorAll('.nav__language-dropdown-item a').forEach(elem => { 
+
+    document.querySelectorAll('.nav__language-dropdown-item a').forEach(elem => {
     elem.addEventListener('click', handleLanguageChange)
     })
     window.onload = () => {

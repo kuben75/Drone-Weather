@@ -1,5 +1,4 @@
-{
-  
+{ 
     "translations": {
       "pl": {
         "weather": "Pogoda",
@@ -24,7 +23,7 @@
         "warning": "Wpisz poprawną nazwę miasta",
         "Headquarters": "Siedziba główna",
         "search": "Szukaj",
-        "remove": "Usuń"
+        "checkArea":"Nie można rezerwować obszaru przy lotnisku/zarezerwowanej strefie"
       },
       "en": {
         "weather": "Weather",
@@ -49,7 +48,7 @@
         "warning": "Enter correct name of city",
         "Headquarters": "Headquarters",
         "search": "Search",
-        "remove": "Remove"
+        "checkArea": "Reserving areas near the airport/reserved areas is not allowed"
       }
     }
 }

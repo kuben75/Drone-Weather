@@ -19,19 +19,19 @@ export const checkWeatherSafety = (code, lang = currentLanguage) => {
     }
 }
 
-export const checkCondition = (data, lang, selector, conditionType, unit, flag) => {
+export const checkCondition = (data, lang, selector, conditionType, unit, reverse) => {
     const element = document.querySelector(selector)
     const updateValue = data.current[conditionType]
     const { safe, caution, unsafe } = weatherData.conditions[conditionType]
     let condition
-    if (flag == !true){
-        if (updateValue >= safe.threshold) condition = safe
-        else if (updateValue >= caution.threshold && updateValue < safe.threshold) condition = caution
+    if (reverse){
+        if (updateValue >= safe.threshold && updateValue < caution.threshold) condition = safe
+        else if (updateValue >= caution.threshold && updateValue < unsafe.threshold) condition = caution
         else condition = unsafe
     }
     else {
-        if (updateValue >= safe.threshold && updateValue < caution.threshold) condition = safe
-        else if (updateValue >= caution.threshold && updateValue < unsafe.threshold) condition = caution
+        if (updateValue >= safe.threshold) condition = safe
+        else if (updateValue >= caution.threshold && updateValue < safe.threshold) condition = caution
         else condition = unsafe
     }
     const message = getTranslation(condition.key, lang)
