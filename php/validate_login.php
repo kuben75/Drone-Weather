@@ -30,11 +30,9 @@ if ($stmt = $con->prepare("SELECT id, password, is_2fa_enabled FROM users WHERE 
             $_SESSION['start'] = time();
             $_SESSION['expire'] = $_SESSION['start'] + (24 * 3600);
             $_SESSION['is_2fa_enabled'] = $is_2fa_enabled;
-
             if (!empty($_POST['remember'])) {
                 setcookie("username", $username, time() + 3600, "/", "", true, true);
             }
-
             if ($is_2fa_enabled) {
                 header("Location: enter_2fa.php");
                 exit();

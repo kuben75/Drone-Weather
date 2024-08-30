@@ -329,6 +329,9 @@ body {
       width: 120px;
       margin: 10px 0;
     }
+    &__account-dropdown{
+      width:100%;
+    }
   }
 }
 
@@ -1169,7 +1172,7 @@ body {
     .weather-data {
       flex-wrap: wrap;
       &__element {
-        margin: 10px 0;
+        margin: auto;
         width: 30%;
       }
     }

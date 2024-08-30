@@ -10,15 +10,14 @@ $con = new mysqli("localhost", "root", "", "users");
 if ($con->connect_error) {
     die("Połączenie z bazą danych nie powiodło się: " . $con->connect_error);
 }
-
 $user_id = $_SESSION['id'];
+
 $stmt = $con->prepare("SELECT username, email, password, created_at FROM users WHERE id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $stmt->bind_result($_SESSION['username'], $email, $password, $created);
 $stmt->fetch();
 $stmt->close();
-
 $stmt1 = $con->prepare("
     SELECT 
         COUNT(*) AS count_reservation,
@@ -32,6 +31,7 @@ $stmt1->execute();
 $stmt1->bind_result($count_reservation, $flight_time, $count_places);
 $stmt1->fetch();
 $stmt1->close();
+$is2fa = $_SESSION['is_2fa_enabled'] ?? false;
 ?>
 <section class="dashboard__header">
     <h2 class="dashboard__title">Panel użytkownika</h2>
@@ -61,7 +61,6 @@ $stmt1->close();
         <span>Data rejestracji:</span> <?php echo htmlspecialchars($created); ?>
     </div>
 </section>
-<!-- Statystyki -->
 <section class="dashboard__usage">
     <h3 class="dashboard__usage-title">Statystyki użytkowania</h3>
     <div class="dashboard__usage-item">
@@ -85,12 +84,20 @@ $stmt1->close();
     </div>
     <h4 class="dashboard__usage-paragraph">Status konfiguracji</h4>
     <div class="dashboard__usage-item">
-        <i class="fa-solid fa-xmark" style="color: #e42121;"></i>
-        <!-- <i class="fa-solid fa-check" style="color: #21bb16;"></i> -->
-        <span>dsadas</span>
+        <?php if($is2fa == 1): ?>
+            <i class="fa-solid fa-check" style="color: #21bb16;"></i>
+            <span>Włączony</span>
+        <?php else: ?>
+            <i class="fa-solid fa-xmark" style = "color: #e42121;" ></i>
+        <span>Wyłączony</span>
+        <?php endif; ?>
     </div>
     <button class="dashboard__usage-button spa" data-url="./php/spa/google_auth.php">
+       <?php if($is2fa == 1): ?>
+        Wyłącz
+        <?php else: ?>
         Włącz
+        <?php endif; ?>
     </button>
 </section>
 <script type="module" src="../../js/dashboard/main.js"></script>
