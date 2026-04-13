@@ -15,7 +15,8 @@
         <section class="modal__auth__left">
             <section class="modal__auth__left__header">Wprowadź kod</section>
             <section class="modal__auth__footer">Wprowadź kod QR poniżej</section>
-            <form action="" method="POST" id="form__validation" autocomplete="off">
+            <form action="" method="POST" id="form__validation" data-action="check2faLogin.php" data-redirecturl="../index.php" data-redirect="true" autocomplete="off">
+                <label for="2fa_code"></label>
                 <input type="text" id="2fa_code" name="2fa_code" placeholder="Kod weryfikacyjny" required>
                 <button type="submit">Zweryfikuj</button>
                 <div class="modal__error-text">
@@ -32,6 +33,6 @@
     <a href="../index.php" class="modal__content__button--return">Powrót do strony głównej</a>
     </section>
 </main>
-<script type="module" src="../js/dashboard/validation.js"></script>
+<script type="module" src="../dist/validation.js"></script>
 </body>
 </html>

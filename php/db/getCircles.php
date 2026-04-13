@@ -1,26 +1,80 @@
 <?php
-session_start();
+require_once __DIR__ . '/../access/access.php';
+require_once __DIR__ . '/../helpers.php';
+require_once __DIR__ . '/../init.php';
+require_once __DIR__ . '/../classes/templates/singleton.php';
+
 header('Content-Type: application/json');
 
-$con = new mysqli("localhost", "root", "", "users");
+use templates\DatabaseConnector;
 
-if ($con->connect_error) {
-    die(json_encode(['error' => "Połączenie z bazą danych nie powiodło się: " . $con->connect_error]));
-}
+class ZoneDataFetcher
+{
+    private $db;
 
-$query = "SELECT lat, lng, radius, color, fillColor, fillOpacity FROM circles";
-$result = $con->query($query);
-$circles = [];
-
-if ($result) {
-    while ($row = $result->fetch_assoc()) {
-        $circles[] = $row;
+    public function __construct()
+    {
+        $this->db = DatabaseConnector::getInstance();
     }
-    $result->free();
-} else {
-    echo json_encode(['error' => "Błąd zapytania: " . $con->error]);
-    exit();
+
+    public function getCircles(): array
+    {
+        $stmt = $this->db->prepare("SELECT lat, lng, radius, color, fillColor, fillOpacity FROM circles");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $circles = [];
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                $circles[] = $row;
+            }
+            $result->free();
+        }
+        $stmt->close();
+        return $circles;
+    }
+
+    public function getUserCircles(): array
+    {
+        $stmt = $this->db->prepare("
+            SELECT lat, lng, radius, user_color, user_fillColor, user_fillOpacity, drone, reserve 
+            FROM coords
+        ");
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $userCircles = [];
+        $otherCircles = [];
+
+        if ($result) {
+            while ($row = $result->fetch_assoc()) {
+                if (!empty($row['drone'])) {
+                    $userCircles[] = $row;
+                } else {
+                    $otherCircles[] = $row;
+                }
+            }
+            $result->free();
+        }
+        $stmt->close();
+        return ['userCircles' => $userCircles, 'otherCircles' => $otherCircles];
+    }
+
+    public function __destruct()
+    {
+        DatabaseConnector::destroyInstance();
+    }
 }
-$con->close();
-echo json_encode(['circleData' => $circles]);
-?>
+
+$fetcher = new ZoneDataFetcher();
+
+try {
+    $circles = $fetcher->getCircles();
+    $userCircleData = $fetcher->getUserCircles();
+
+    echo json_encode([
+        'circleData' => $circles,
+        'userCircleData' => $userCircleData['userCircles'],
+        'otherCircleData' => $userCircleData['otherCircles']
+    ]);
+} catch (Exception $e) {
+    echo json_encode(['error' => $e->getMessage()]);
+}

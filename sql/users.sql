@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 28, 2024 at 01:09 PM
+-- Generation Time: Apr 12, 2026 at 03:17 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -79,10 +79,32 @@ CREATE TABLE `coords` (
   `fillOpacity` float NOT NULL,
   `drone` varchar(255) NOT NULL,
   `reserve` datetime NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `description` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `coords`
+--
+
+
 -- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `login_history`
+--
+
+CREATE TABLE `login_history` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `login_time` timestamp NOT NULL DEFAULT current_timestamp(),
+  `ip_address` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `login_history`
+--
+
 
 --
 -- Struktura tabeli dla tabeli `users`
@@ -90,13 +112,24 @@ CREATE TABLE `coords` (
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `surname` varchar(30) DEFAULT NULL,
   `username` varchar(70) NOT NULL,
   `email` varchar(50) NOT NULL,
+  `phone_number` varchar(20) DEFAULT NULL,
+  `language` varchar(20) NOT NULL DEFAULT 'pl',
   `password` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `is_2fa_enabled` tinyint(1) DEFAULT 0,
-  `2fa_secret` varchar(32) DEFAULT NULL
+  `2fa_secret` varchar(255) DEFAULT NULL,
+  `reset_token_hash` varchar(64) DEFAULT NULL,
+  `reset_token_expires_at` datetime DEFAULT NULL,
+  `image` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
 
 --
 -- Indeksy dla zrzutów tabel
@@ -116,12 +149,20 @@ ALTER TABLE `coords`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indeksy dla tabeli `login_history`
+--
+ALTER TABLE `login_history`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indeksy dla tabeli `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `username` (`username`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `reset_token_hash` (`reset_token_hash`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -137,13 +178,19 @@ ALTER TABLE `circles`
 -- AUTO_INCREMENT for table `coords`
 --
 ALTER TABLE `coords`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+
+--
+-- AUTO_INCREMENT for table `login_history`
+--
+ALTER TABLE `login_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- Constraints for dumped tables
@@ -154,6 +201,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `coords`
   ADD CONSTRAINT `coords_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
+-- Constraints for table `login_history`
+--
+ALTER TABLE `login_history`
+  ADD CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

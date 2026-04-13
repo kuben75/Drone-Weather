@@ -1,12 +1,7 @@
-
 <?php
-session_start();
-if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin'] || time() > ($_SESSION['expire'] ?? 0)){
-    session_destroy();
-    header("Location: index.php");
-    exit;
-}
-
+require_once __DIR__ . '/../init.php';
+require_once __DIR__ . '/../db_connection.php';
+require_once __DIR__ . '/../verify_Authorization.php';
 require '../../vendor/autoload.php';
 use PragmaRX\Google2FA\Google2FA;
 
@@ -21,7 +16,7 @@ $is2fa = $_SESSION['is_2fa_enabled'] ?? false;
     <h2 class="dashboard__title">Weryfikacja dwustopniowa</h2>
 </section>
 <?php if($is2fa == 0) :?>
-<section class="dashboard__usage">
+<section class="dashboard__usage" data-auth="true">
     <section class="modal">
         <section class="modal__auth">
             <section class="modal__auth__left">
@@ -41,7 +36,7 @@ $is2fa = $_SESSION['is_2fa_enabled'] ?? false;
             <section class="modal__auth__right">
                 <section class="modal__auth__right__header">Uwierzytelnianie dwuskładnikowe Google</section>
                 <section class="modal__auth__right__content"> Wprowadź kod weryfikacyjny wygenerowany przez aplikację na Twoim telefonie</section>
-                <section class="modal__auth__right__footer">Ręczny kod: <?php echo $secret; ?></section>
+                <section class="modal__auth__right__footer">Ręczny kod: <?php echo htmlspecialchars($secret); ?></section>
             </section>
         </section>
     </section>
@@ -59,4 +54,3 @@ $is2fa = $_SESSION['is_2fa_enabled'] ?? false;
             </section>
         </section>
     <?php endif ;?>
-<script type="module" src="js/dashboard/main.js" defer></script>

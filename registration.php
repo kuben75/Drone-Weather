@@ -1,6 +1,11 @@
-<?php ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+<?php
+require_once __DIR__ . '/php/helpers.php';
+require_once __DIR__ . '/php/init.php';
+require_once __DIR__ . '/php/db_connection.php';
+require_once __DIR__ . '/php/verify_Authorization.php';
+if (verifyUser()) {
+    redirect('index.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -10,6 +15,8 @@ error_reporting(E_ALL);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rejestracja</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/utils/_variables.css" />
+    <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/registration.css" />
 </head>
 <body>
@@ -24,7 +31,7 @@ error_reporting(E_ALL);
                 <div class="nav__language">
                   <ul class="nav__language-list">
                     <li class="nav__language-item">
-                      <a href="#" class="nav__language-selector translate" data-translate="selectLanguage">Wybierz język
+                      <a href="#" class="nav__language-selector translate" data-translate="selectLanguage">
                         <span class="nav__language-arrow">▼</span>
                       </a>
                       <ul class="nav__language-dropdown">
@@ -48,38 +55,32 @@ error_reporting(E_ALL);
         </nav>
       </header>
     <main class="main-content">
-        <form action="php/validate_registration.php" method="POST" class="main-content__form" autocomplete="off">
+        <form action="" data-action="php/validate_registration.php" id="form__validation" data-redirecturl="index.php" data-redirect="true" method="POST" class="main-content__form" autocomplete="off">
             <div class="main-content__container">
-                <h1 class="main-content__heading">Rejestracja</h1>
-                <p class="main-content__paragraph--heading">Wypełnij formularz w celu rejestracji</p>
+                <h1 class="main-content__heading translate" data-translate="registration"></h1>
+                <p class="main-content__paragraph--heading translate" data-translate="fillForm"></p>
                 <hr>
-                <div class="main-content__form--error">
-                    <?php
-                    session_start();
-                    if (!empty($_SESSION['message'])) {
-                        echo $_SESSION['message'];
-                        unset($_SESSION['message']);
-                    }
-                    ?>
-                </div>
-                <label for="username"><p class="main-content__paragraph">Nazwa użytkownika</p></label>
-                <input type="text" name="username" placeholder="Wpisz nazwę użytkownika" id="username" required>
-                <label for="email"><p class="main-content__paragraph">Email</p></label>
-                <input type="text" placeholder="Wpisz Email" name="email" id="email" required>
-                <label for="psw"><p class="main-content__paragraph">Hasło</p></label>
-                <input type="password" placeholder="Wpisz hasło" name="password" id="password" required>
-                <label for="psw-repeat"><p class="main-content__paragraph">Powtórz hasło</p></label>
-                <input type="password" placeholder="Powtórz hasło" name="psw-repeat" id="psw-repeat" required>
+                <section class="modal__error-text"></section>
+                <label for="username"><p class="main-content__paragraph translate" data-translate="username"></p></label>
+                <input type="text" class="translate" name="username" placeholder="Wpisz nazwę użytkownika" data-placeholder="enterUsername" id="username" required>
+                <label for="email"><p class="main-content__paragraph translate" data-translate="email"></p></label>
+                <input type="text" class="translate" placeholder="Wpisz Email" data-placeholder="enterEmail" name="email" id="email" required>
+                <label for="psw">
+                    <p class="main-content__paragraph translate" data-translate="password"></p>
+                </label>
+                <input type="password" class="translate" placeholder="Wpisz hasło" data-placeholder="enterPassword" name="password" id="password" required>
+                <label for="psw-repeat">
+                    <p class="main-content__paragraph translate" data-translate="repeatPassword"></p></label>
+                <input type="password" class="translate" placeholder="Powtórz hasło" data-placeholder="repeatPassword" name="psw-repeat" id="psw-repeat" required>
                 <hr>
-                <button type="submit" class="registerbtn">Zarejestruj się</button>
+                <button type="submit" class="registerbtn translate" data-translate="registerBtn"></button>
             </div>
             <div class="main-content__footer">
-                <p class="main-content__paragraph">Masz już konto? <a href="userlogin.php">Zaloguj się</a>.</p>
+                <p class="main-content__footer--paragraph translate" data-translate="haveAccount"></p> <a href="userlogin.php" class="main-content__footer--link translate" data-translate="login"></a>
             </div>
         </form>
-
     </main>
-
-
+<script type="module" src="dist/panelTranslation.js"></script>
+<script type="module" src="dist/validation.js"></script>
 </body>
 </html>

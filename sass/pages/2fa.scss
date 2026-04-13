@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
 $white: #ffffff;
 $black: #000;
 $font: "Poppins", sans-serif;
@@ -21,17 +22,20 @@ $rgba: rgba(89, 81, 201, 1);
     overflow: hidden;
     margin: 0;
     padding: 0;
-    &__title{
+
+    &__title {
         display: flex;
         justify-content: center;
         align-items: center;
-        &--span{
-            font-size: 28px;
+
+        &--span {
+            font-size: 1.75rem;
             font-weight: bold;
             color: $rgba;
-            padding: 20px;
+            padding: 1.25rem; 
         }
     }
+
     .modal {
         display: flex;
         justify-content: center;
@@ -40,12 +44,13 @@ $rgba: rgba(89, 81, 201, 1);
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0.25rem 0.9375rem rgba(0, 0, 0, 0.2); 
+
         &__auth {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            height: 650px;
-            width: 800px;
+            height: 650px; 
+            width: 800px; 
             overflow: hidden;
 
             &__left,
@@ -62,20 +67,20 @@ $rgba: rgba(89, 81, 201, 1);
 
                 &__header {
                     color: rgb(66, 133, 244);
-                    font-size: 26px;
+                    font-size: 1.625rem;
                     font-weight: bold;
                 }
 
                 &__content {
                     img {
-                        width: 150px;
-                        height: 150px;
+                        width: 150px; 
+                        height: 150px; 
                     }
                 }
 
                 &__footer {
                     color: $rgba;
-                    font-size: 16px;
+                    font-size: 1rem;
                 }
             }
 
@@ -90,11 +95,11 @@ $rgba: rgba(89, 81, 201, 1);
                 }
 
                 &__header {
-                    font-size: 26px;
+                    font-size: 1.625rem;
                 }
 
                 &__content {
-                    font-size: 18px;
+                    font-size: 1.125rem;
                 }
             }
         }
@@ -103,25 +108,25 @@ $rgba: rgba(89, 81, 201, 1);
     form {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 1rem;
         width: 100%;
-        max-width: 300px;
+        max-width: 300px; 
         margin: 0 auto;
 
         input[type="text"] {
-            padding: 12px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-            font-size: 16px;
+            padding: 0.75rem; 
+            border-radius: 0.25rem; 
+            border: 0.0625rem solid #ccc; 
+            font-size: 1rem;
         }
 
         button {
             background-color: rgb(66, 133, 244);
             color: $white;
             border: none;
-            padding: 12px;
-            border-radius: 4px;
-            font-size: 16px;
+            padding: 0.75rem; 
+            border-radius: 0.25rem;
+            font-size: 1rem; 
             cursor: pointer;
             transition: background-color 0.3s;
 
@@ -130,29 +135,31 @@ $rgba: rgba(89, 81, 201, 1);
             }
         }
     }
-    .modal__content__button{
+
+    .modal__content__button {
         display: flex;
         justify-content: center;
         align-items: center;
         position: fixed;
-        left:50%;
+        left: 50%;
         bottom: 5%;
         transform: translate(-50%, -50%);
+
         &--return {
             background-color: rgb(23, 99, 222);
-            color: #ffffff;
+            color: $white;
             border: none;
-            padding: 12px 20px;
-            border-radius: 4px;
-            font-size: 16px;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.25rem; 
+            font-size: 1rem; 
             cursor: pointer;
-            text-decoration: none; 
+            text-decoration: none;
             text-align: center;
-            margin: 25px;
+            margin: 1.5625rem; 
+
             &:hover {
                 background-color: rgb(50, 115, 220);
             }
         }
     }
-    
 }

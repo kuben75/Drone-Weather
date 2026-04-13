@@ -1,21 +1,26 @@
 <?php
-session_start();
-if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin'] || time() > ($_SESSION['expire'] ?? 0)) {
-    session_destroy();
-    header("Location: index.php");
-    exit;
-}
-$con = new mysqli("localhost", "root", "", "users");
-if ($con->connect_error) {
-    die("Połączenie z bazą danych nie powiodło się: " . $con->connect_error);
+require_once __DIR__ . '/php/init.php';
+require_once __DIR__ . '/php/db_connection.php';
+require_once __DIR__ . '/php/verify_authorization.php';
+
+if (!verifyUser()) {
+    destroySession();
+    redirect('index.php');
 }
 
-$stmt = $con->prepare("SELECT username, email, password, created_at FROM users WHERE id = ?");
-$stmt->bind_param("i", $_SESSION['id']);
-$stmt->execute();
-$stmt->bind_result($_SESSION['username'], $email, $password, $created);
-$stmt->fetch();
-$stmt->close();
+try {
+    $con = dbConnection();
+    $stmt = $con->prepare("SELECT username, email, password, created_at FROM users WHERE id = ?");
+    $stmt->bind_param("i", $_SESSION['id']);
+    $stmt->execute();
+    $stmt->bind_result($username, $email, $password, $created);
+    $stmt->fetch();
+    $stmt->close();
+    $con->close();
+} catch (Exception $error) {
+    echo $error->getMessage();
+    die("Błąd połączenia");
+}
 ?>
 
 <!DOCTYPE html>
@@ -26,14 +31,15 @@ $stmt->close();
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="css/dashboard.css"/>
+        <link rel="stylesheet" href="css/pages/dashboard.css"/>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
 	</head>
 	<body>
+
     <nav class="nav">
                 <ul class="nav__list">
                     <li class="nav__item">
@@ -79,7 +85,7 @@ $stmt->close();
                         </a>
                     </li>
                     <li class="nav__item logout">
-                        <a href="#" class="nav__link spa" data-logouturl="./php/spa/logout.php">
+                        <a href="#" class="nav__link spa" data-logout="./php/spa/logout.php">
                             <i class="fa-solid fa-arrow-right-from-bracket"></i>
                             <span class="nav__description">Wyloguj się</span>
                         </a>
@@ -87,8 +93,7 @@ $stmt->close();
                 </ul>
             </nav>
     <main class="dashboard">
-
 </main>
-            <script type="module" src="js/dashboard/main.js"></script>
+<script type="module" src="dist/spa.js"></script>
 	</body>
 </html>

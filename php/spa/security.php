@@ -30,7 +30,6 @@ $stmt->close();
         </section>
     </section>
 </section>
-<!-- Podsumowanie konta -->
 <section class="dashboard__summary">
     <h3 class="dashboard__summary-title">Przykładowy tekst</h3>
     <div class="dashboard__summary-item">

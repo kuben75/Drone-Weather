@@ -1,10 +1,20 @@
 <?php
-session_start();
-
-$isLoggedIn = $_SESSION['loggedin'] ?? false;
-$user_id = $_SESSION['id'] ?? 0;
-
-if (!isset($isLoggedIn) || !$isLoggedIn || time() > $_SESSION['expire']) {
-    session_destroy();
-    setcookie(session_name(), '', time() - 3600, '/');
-}?>
+session_start([
+    'cookie_httponly' => true,
+    'cookie_secure' => true
+]);
+require_once __DIR__ . '/helpers.php';
+function checkLogin(): bool
+{
+    if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
+        return false;
+    }
+    if (time() > ($_SESSION['expire'] ?? 0)) {
+        destroySession();
+        redirect('index.php');
+        return false;
+    }
+    return  true;
+}
+$isloggedin = checkLogin();
+?>

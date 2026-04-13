@@ -1,13 +1,29 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-require 'php/init.php';
-require 'php/callDataBase.php';
+require_once __DIR__ . '/php/init.php';
+require_once __DIR__ . '/php/helpers.php';
+require_once __DIR__ . '/php/db_connection.php';
+require_once __DIR__ . '/php/classes/callDatabase.php';
+require_once __DIR__ . '/php/db/AccountData.php';
+
+$isLoggedIn = checkLogin();
+if (!checkDbUsers()) {
+    if (basename($_SERVER['PHP_SELF']) !== 'index.php') {
+        redirect('index.php');
+    }
+}
+if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin']) {
+    destroySession();
+}
+$caller = new DatabaseCaller();
+$caller->callDatabase();
+$userLanguage = $_SESSION['lang'] ?? 'pl';
+if(isset($_SESSION['id'])) {
+$data = new AccountData($_SESSION['id']);
+$userData = $data->getAccountData();
+}
 ?>
 <!doctype html>
 <html lang="pl">
-
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -16,6 +32,11 @@ require 'php/callDataBase.php';
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <script>
+        const userLanguage = "<?php echo $userLanguage; ?>";
+    </script>
+    <link rel="stylesheet" href="css/utils/_variables.css" />
+    <link rel="stylesheet" href="css/header.css" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -47,6 +68,7 @@ require 'php/callDataBase.php';
             <a href="#contact" class="nav__menu-link translate" data-translate="contact" id="#contactSlide"></a>
           </li>
           <li class="nav__menu-item">
+            <?php if (!$isLoggedIn): ?>
             <div class="nav__language">
               <ul class="nav__language-list">
                 <li class="nav__language-item">
@@ -68,6 +90,7 @@ require 'php/callDataBase.php';
                 </li>
               </ul>
             </div>
+              <?php endif; ?>
           </li>
           <?php if ($isLoggedIn): ?>
           <li class="nav__menu-item">
@@ -75,7 +98,11 @@ require 'php/callDataBase.php';
               <ul class="nav__account-list">
                 <li class="nav__account-item">
                   <a href="#" class="nav__account-selector">
-                    <img src="./img/user_default.svg" alt="Avatar" class="nav__account-avatar">
+                      <?php if (!empty($userData) && isset($userData[0]['image']) && $userData[0]['image'] !== ''): ?>
+                          <img src="php/uploads/<?php echo htmlspecialchars($userData[0]['image']) ?>" alt="User Image">
+                      <?php else: ?>
+                          <img src="img/user_default.svg" alt="User Image">
+                      <?php endif; ?>
                     <span class="nav__account-arrow">▼</span>
                   </a>
                   <ul class="nav__account-dropdown">
@@ -121,7 +148,7 @@ require 'php/callDataBase.php';
   <section class="temp-switch" id="weather">
     <label class="temp-switch__label">
       <input type="checkbox" id="temp-toggle" class="temp-switch__input" />
-      <div class="temp-switch__slider"></div>
+      <span class="temp-switch__slider"></span>
       <span class="temp-switch__cels">°C</span>
       <span class="temp-switch__fahr">°F</span>
     </label>
@@ -360,6 +387,10 @@ require 'php/callDataBase.php';
                           <label for="meeting" class="modal__label">Wybierz datę i godzinę rezerwacji:</label>
                           <input type="datetime-local" id="reserve" name="reserve" class="modal__input">
                       </div>
+                      <div class="modal__form-group">
+                          <label for="description" class="modal__label">Opis</label>
+                          <input type="text" name="description" id="description" class="modal__input" placeholder="Opis" required>
+                      </div>
                       <div class="modal__form-group modal__form-group--actions">
                           <button type="submit" class="modal__submit-btn">Zarejestruj lot</button>
                       </div>
@@ -412,7 +443,9 @@ require 'php/callDataBase.php';
     </div>
     <div class="contact__container-shadow"></div>
   </footer>
-  <script type="module" src="js/main.js"></script>
+  <script type="module" src="dist/weather.js"></script>
+  <script type="module" src="dist/main.js"></script>
+  <script type="module" src="dist/map.js"></script>
 </body>
 
 </html>

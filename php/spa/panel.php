@@ -1,37 +1,19 @@
 <?php
-session_start();
-if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin'] || time() > ($_SESSION['expire'] ?? 0)) {
-    session_destroy();
-    header("Location: index.php");
+require_once __DIR__ . '/../helpers.php';
+require_once __DIR__ . '/../init.php';
+require_once __DIR__ . '/../verify_Authorization.php';
+require_once __DIR__ . '/../classes/userData.php';
+
+$is2fa = $_SESSION['is_2fa_enabled'] ?? false;
+$userId = $_SESSION['id'] ?? null;
+if (!verifyUser()) {
+    destroySession();
+    redirect('../index.php');
     exit;
 }
-
-$con = new mysqli("localhost", "root", "", "users");
-if ($con->connect_error) {
-    die("Połączenie z bazą danych nie powiodło się: " . $con->connect_error);
-}
-$user_id = $_SESSION['id'];
-
-$stmt = $con->prepare("SELECT username, email, password, created_at FROM users WHERE id = ?");
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$stmt->bind_result($_SESSION['username'], $email, $password, $created);
-$stmt->fetch();
-$stmt->close();
-$stmt1 = $con->prepare("
-    SELECT 
-        COUNT(*) AS count_reservation,
-        SUM(CASE WHEN reserve < NOW() THEN 1 ELSE 0 END) AS flight_time,
-        COUNT(DISTINCT CASE WHEN reserve < NOW() THEN CONCAT(lat, ',', lng) END) AS count_places
-    FROM coords 
-    WHERE user_id = ?
-");
-$stmt1->bind_param("i", $user_id);
-$stmt1->execute();
-$stmt1->bind_result($count_reservation, $flight_time, $count_places);
-$stmt1->fetch();
-$stmt1->close();
-$is2fa = $_SESSION['is_2fa_enabled'] ?? false;
+$userDataService = new UserData();
+$userData = $userDataService->getUserData($userId);
+$userStats = $userDataService->getUserStats($userId);
 ?>
 <section class="dashboard__header">
     <h2 class="dashboard__title">Panel użytkownika</h2>
@@ -41,39 +23,42 @@ $is2fa = $_SESSION['is_2fa_enabled'] ?? false;
             <input type="text" placeholder="Szukaj" />
         </section>
         <section class="dashboard__image">
-            <img src="img/user_default.svg" alt="userphoto">
+            <?php if (!empty($userData) && isset($userData['image']) && $userData['image'] !== ''): ?>
+                <img src="php/uploads/<?php echo htmlspecialchars($userData['image']) ?>" alt="User Image">
+            <?php else: ?>
+                <img src="img/user_default.svg" alt="User Image">
+            <?php endif; ?>
         </section>
     </section>
 </section>
-<!-- Podsumowanie konta -->
 <section class="dashboard__summary">
     <h3 class="dashboard__summary-title">Podsumowanie konta</h3>
     <div class="dashboard__summary-item">
         <i class="fa-solid fa-user"></i>
-        <span>Nazwa użytkownika:</span> <?php echo htmlspecialchars($_SESSION['username']); ?>
+        <span>Nazwa użytkownika:</span> <?php echo htmlspecialchars($userData['username']); ?>
     </div>
     <div class="dashboard__summary-item">
         <i class="fa-solid fa-envelope"></i>
-        <span>Email:</span> <?php echo htmlspecialchars($email); ?>
+        <span>Email:</span> <?php echo htmlspecialchars($userData['email']); ?>
     </div>
     <div class="dashboard__summary-item">
         <i class="fa-solid fa-calendar-alt"></i>
-        <span>Data rejestracji:</span> <?php echo htmlspecialchars($created); ?>
+        <span>Data rejestracji:</span> <?php echo htmlspecialchars($userData['created']); ?>
     </div>
 </section>
 <section class="dashboard__usage">
     <h3 class="dashboard__usage-title">Statystyki użytkowania</h3>
     <div class="dashboard__usage-item">
         <i class="fa-solid fa-calendar-check"></i>
-        <span>Liczba rezerwacji:</span> <?php echo htmlspecialchars($count_reservation); ?>
+        <span>Liczba rezerwacji:</span> <?php echo isset($userStats['count_reservation']) ? htmlspecialchars($userStats['count_reservation']) : '0'; ?>
     </div>
     <div class="dashboard__usage-item">
         <i class="fa-solid fa-clock"></i>
-        <span>Łączny czas lotów:</span> <?php echo htmlspecialchars($flight_time); ?> godzin
+        <span>Łączny czas lotów:</span> <?php echo isset ($userStats['flight_time']) ? htmlspecialchars($userStats['flight_time']) : '0'; ?> godzin/y
     </div>
     <div class="dashboard__usage-item">
         <i class="fa-solid fa-map"></i>
-        <span>Liczba odwiedzonych miejsc:</span> <?php echo htmlspecialchars($count_places); ?>
+        <span>Liczba odwiedzonych miejsc:</span> <?php echo isset($userStats['count_places']) ? htmlspecialchars($userStats['count_places']) : '0'; ?>
     </div>
 </section>
 
@@ -100,4 +85,3 @@ $is2fa = $_SESSION['is_2fa_enabled'] ?? false;
         <?php endif; ?>
     </button>
 </section>
-<script type="module" src="../../js/dashboard/main.js"></script>

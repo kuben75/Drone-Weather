@@ -1,43 +1,88 @@
 <?php
-session_start();
-
-header('Content-type: application/json');
-
+require_once __DIR__ . '/init.php';
 require '../vendor/autoload.php';
+require 'db/crypto.php';
+require_once __DIR__ . '/db_connection.php';
+require_once __DIR__ . '/verify_Authorization.php';
+require_once __DIR__ . '/classes/templates/singleton.php';
+require_once __DIR__ . '/classes/templates/message.php';
+require_once __DIR__ . '/classes/templates/UniversalValidator.php';
+
+use JetBrains\PhpStorm\NoReturn;
+use PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException;
+use PragmaRX\Google2FA\Exceptions\InvalidCharactersException;
+use PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException;
 use PragmaRX\Google2FA\Google2FA;
+use templates\DatabaseConnector;
+use templates\ResponseSender;
+use templates\UniversalValidator;
 
-if (!isset($_SESSION['id']) || !$_SESSION['is_2fa_enabled']) {
-    session_destroy();
-    header("Location: ../index.php");
-    exit();
+class TwoFactorProcessor {
+    private string $submittedCode;
+    private int $userId;
+    private Google2FA $google2fa;
+
+    #[NoReturn] public function __construct(string $submittedCode, int $userId) {
+        $this->submittedCode = $submittedCode;
+        $this->userId = $userId;
+        $this->google2fa = new Google2FA();
+        $this->validateInput();
+        $this->process2FA();
+    }
+
+    private function validateInput(): void {
+        if (empty($this->submittedCode) || !UniversalValidator::validate($this->submittedCode, 'length', 6)) {
+            ResponseSender::getMessage()->sendResponse('error', 'Nieprawidłowy kod');
+        }
+    }
+
+    private function GetEncryptedSecret(): string {
+        $stmt = DatabaseConnector::getInstance()->prepare("SELECT 2fa_secret FROM users WHERE id = ?");
+        $stmt->bind_param("i", $this->userId);
+        $stmt->execute();
+        $encryptedSecret = '';
+        $stmt->bind_result($encryptedSecret);
+        $stmt->fetch();
+        $stmt->close();
+        return $encryptedSecret;
+    }
+
+    /**
+     * @throws IncompatibleWithGoogleAuthenticatorException
+     * @throws SecretKeyTooShortException
+     * @throws InvalidCharactersException
+     */
+    private function validate2FA($secret): bool {
+        return $this->google2fa->verifyKey($secret, $this->submittedCode);
+    }
+
+    #[NoReturn] private function process2FA(): void {
+        try {
+            $encryptedSecret = $this->GetEncryptedSecret();
+            $secret = decrypt($encryptedSecret);
+            if ($this->validate2FA($secret)) {
+                $_SESSION['is_2fa_enabled'] = true;
+                $_SESSION['loggedin'] = true;
+                ResponseSender::getMessage()->sendResponse('success', 'Weryfikacja dwustopniowa została włączona!');
+            } else {
+                ResponseSender::getMessage()->sendResponse('error', 'Podany kod jest nieprawidłowy, spróbuj ponownie');
+            }
+        } catch (IncompatibleWithGoogleAuthenticatorException | SecretKeyTooShortException | InvalidCharactersException $e) {
+            ResponseSender::getMessage()->sendResponse('error', 'Wystąpił błąd z kodem 2FA: ' . $e->getMessage());
+        }
+    }
+    public function __destruct() {
+        DatabaseConnector::destroyInstance();
+    }
 }
-$google2fa = new Google2FA();
-$userId = $_SESSION['id'];
-$submittedCode = str_replace(' ', '', $_POST['2fa_code']);
+try {
+    $userId = $_SESSION['id'] ?? null;
+    if (!$userId) {
+       ResponseSender::getMessage()->sendResponse('error', 'Nie jesteś zalogowany');
+    }
+    $submittedCode = str_replace(' ', '', $_POST['2fa_code']);
+    new TwoFactorProcessor($submittedCode, $userId);
 
-$con = new mysqli("localhost", "root", "", "users");
-if ($con->connect_error) {
-    echo json_encode(['status' => 'error', 'message' => 'Połączenie z bazą danych nie powiodło się: ' . $con->connect_error]);
-    exit();
+} catch (Exception $e) {
+    ResponseSender::getMessage()->sendResponse('error', $e->getMessage());
 }
-
-$stmt = $con->prepare("SELECT 2fa_secret FROM users WHERE id = ?");
-$stmt->bind_param("i", $userId);
-$stmt->execute();
-$stmt->bind_result($secret);
-$stmt->fetch();
-$stmt->close();
-$con->close();
-
-$isValid = $google2fa->verifyKey($secret, $submittedCode);
-
-if ($isValid) {
-    $_SESSION['loggedin'] = true;
-    $_SESSION['2fa_verified'] = true;
-    echo json_encode(['status' => 'success', 'message' => 'Zalogowano pomyślnie']);
-} else {
-    echo json_encode(['status' => 'error', 'message' => 'Podany kod jest nieprawidłowy, spróbuj ponownie']);
-    $_SESSION['loggedin'] = false;
-    $_SESSION['2fa_verified'] = false;
-}
-?>

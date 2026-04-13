@@ -2,6 +2,14 @@
     "require": {
         "sonata-project/google-authenticator": "^2.3",
         "pragmarx/google2fa": "^8.0",
-        "endroid/qr-code": "^5.0"
+        "endroid/qr-code": "^5.0",
+        "ext-openssl": "*",
+        "phpmailer/phpmailer": "^6.9",
+        "ext-mysqli": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "templates\\": "PHP/classes/templates/"
+        }
     }
 }
